@@ -1,0 +1,92 @@
+import React from 'react';
+import {Text, Button, Icon} from "native-base";
+import {View, StyleSheet, TouchableOpacity} from "react-native";
+import application_colors from "../../utilities/application_colors";
+import {Actions} from "react-native-router-flux";
+
+export default class SidebarComponent extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {};
+    }
+
+    render() {
+        return (
+            <View style={styles.sidebarContainer}>
+
+                <View>
+                    <TouchableOpacity onPress={() => {
+                        this.props.closeDrawer()
+                    }}>
+                        <Icon name='close' style={styles.iconStyle} color={"white"}/>
+                    </TouchableOpacity>
+                    <View style={styles.menuContainer}>
+                        <TouchableOpacity onPress={()=>{Actions.push("HomeScene"); this.props.closeDrawer()}} >
+                            <Text style={styles.menuLink}>HOME</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={()=>{Actions.push("AddScene"); this.props.closeDrawer()}}>
+                            <Text style={styles.menuLink}>NOWY WPIS</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={()=>{Actions.push("CategoriesScene"); this.props.closeDrawer()}}>
+                            <Text style={styles.menuLink}>KATEGORIE</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={()=>{Actions.push("AboutScene"); this.props.closeDrawer()}}>
+                            <Text style={styles.menuLink}>O AUTORZE</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                <View style={styles.versionContainer}>
+                    <Text style={styles.versionText}>ver 0.1 2019-05-21</Text>
+                </View>
+            </View>
+        )
+    }
+
+}
+
+const styles = StyleSheet.create({
+
+    sidebarContainer: {
+        backgroundColor: application_colors.main_color,
+        flex: 1,
+
+    },
+
+    iconStyle: {
+        fontSize: 40,
+        padding: 5,
+        paddingLeft: 15,
+        color:"white"
+    },
+
+    menuContainer:{
+        paddingTop:15,
+        paddingLeft: 5,
+        paddingRight:5,
+    },
+
+    menuLink:{
+        borderStyle:"solid",
+        borderColor:application_colors.main_color_lighter,
+        borderBottomWidth:1,
+        color:"white",
+        padding: 15,
+        paddingLeft:10,
+        fontSize:16,
+
+    },
+
+    versionContainer:{
+
+    },
+
+    versionText:{
+        color: "white",
+        fontSize:10,
+        padding: 15,
+    }
+
+});
+
+
