@@ -41,6 +41,9 @@ export default class RouterComponent extends React.Component {
                 }}>
                     <View style={{
                         flexDirection: 'row',
+                        borderColor: "#ddd",
+                        borderStyle: "solid",
+                        borderBottomWidth:1
                     }}>
                         <View>
                             <TouchableOpacity onPress={() => this.setState({isDrawerOpen: true})}>
@@ -65,6 +68,7 @@ export default class RouterComponent extends React.Component {
                     <View style={{
                         flex: 1,
                         flexDirection: 'column',
+                        backgroundColor:"white"
                     }}>
                         <Router scenes={scenes}/>
                     </View>

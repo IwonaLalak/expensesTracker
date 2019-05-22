@@ -7,10 +7,8 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View,} from 'react-native';
 import RouterComponent from "./application/componens/Router/RouterComponent";
 import styled from 'styled-components';
-import {Button} from "native-base";
 
 
 type Props = {};
