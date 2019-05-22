@@ -17,21 +17,21 @@ export default class SidebarComponent extends React.Component {
 
                 <View>
                     <TouchableOpacity onPress={() => {
-                        this.props.closeDrawer()
+                        this.props.closeDrawer(Actions.currentScene)
                     }}>
                         <Icon name='close' style={styles.iconStyle} color={"white"}/>
                     </TouchableOpacity>
                     <View style={styles.menuContainer}>
-                        <TouchableOpacity onPress={()=>{Actions.push("HomeScene"); this.props.closeDrawer()}} >
+                        <TouchableOpacity onPress={()=>{Actions.push("HomeScene"); this.props.closeDrawer("HomeScene")}} >
                             <Text style={styles.menuLink}>HOME</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={()=>{Actions.push("AddScene"); this.props.closeDrawer()}}>
+                        <TouchableOpacity onPress={()=>{Actions.push("AddScene"); this.props.closeDrawer("AddScene")}}>
                             <Text style={styles.menuLink}>NOWY WPIS</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={()=>{Actions.push("CategoriesScene"); this.props.closeDrawer()}}>
+                        <TouchableOpacity onPress={()=>{Actions.push("CategoriesScene"); this.props.closeDrawer("CategoriesScene")}}>
                             <Text style={styles.menuLink}>KATEGORIE</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={()=>{Actions.push("AboutScene"); this.props.closeDrawer()}}>
+                        <TouchableOpacity onPress={()=>{Actions.push("AboutScene"); this.props.closeDrawer("AboutScene")}}>
                             <Text style={styles.menuLink}>O AUTORZE</Text>
                         </TouchableOpacity>
                     </View>

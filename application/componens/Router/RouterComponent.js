@@ -15,6 +15,7 @@ export default class RouterComponent extends React.Component {
         super(props);
         this.state = {
             isDrawerOpen: false,
+            isQuickAddVisible:Actions.currentScene==="HomeScene"
         }
     }
 
@@ -24,8 +25,8 @@ export default class RouterComponent extends React.Component {
             <Drawer
                 open={this.state.isDrawerOpen}
                 type="overlay"
-                content={<SidebarComponent closeDrawer={() => {
-                    this.setState({isDrawerOpen: false})
+                content={<SidebarComponent closeDrawer={(scene) => {
+                    this.setState({isDrawerOpen: false, isQuickAddVisible: scene === "HomeScene"})
                 }}/>}
                 tapToClose={true}
                 openDrawerOffset={0.2}
@@ -48,9 +49,10 @@ export default class RouterComponent extends React.Component {
                         </View>
                         <View>
                             {
-                                Actions.currentScene === "HomeScene"?
+                                //Actions.currentScene === "HomeScene"?
+                                this.state.isQuickAddVisible?
                                     <View style={styles.quickAddContainter}>
-                                        <TouchableOpacity onPress={() => Actions.push("AddScene")}>
+                                        <TouchableOpacity onPress={() => {Actions.push("AddScene"); this.setState({isQuickAddVisible:false})}}>
                                             <Text style={styles.quickAddText}>+ DODAJ WPIS</Text>
                                         </TouchableOpacity>
                                     </View>
