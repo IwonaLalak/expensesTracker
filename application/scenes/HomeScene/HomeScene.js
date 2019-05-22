@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import {Platform, StyleSheet, View, TouchableOpacity} from 'react-native';
 import {Actions} from "react-native-router-flux";
-import {Header, Content, Button, Text, List, ListItem, Thumbnail, Left, Body, Right, Icon, Container as ListContainer,} from 'native-base';
+import {Content, Button, Text, List, ListItem, Icon, Container as ListContainer, Fab} from 'native-base';
 import local_posts from "../../localfiles/local_posts";
 import local_categories from "../../localfiles/local_categories";
 import application_colors from "../../utilities/application_colors";
@@ -171,7 +171,7 @@ export default class HomeScene extends React.Component {
                                 <ListItem>
                                     <View flex={1} style={styles.L_main_container}>
                                         <View style={styles.L_icon_container}>
-                                            <Icon name={'flash'} style={styles.L_icon}/>
+                                            <Icon name={'logo-apple'} style={styles.L_icon}/>
                                         </View>
                                         <View flex={1} style={styles.L_text_container}>
                                             <View style={styles.L_date_container}>
@@ -180,11 +180,11 @@ export default class HomeScene extends React.Component {
                                                 </Text>
                                             </View>
                                             <View style={styles.L_descr_container}>
-                                                <Text style={styles.L_descr}>Artykuły gospodarstwa domowego</Text>
+                                                <Text style={styles.L_descr}>Rachunki</Text>
                                             </View>
                                         </View>
                                         <View style={styles.L_price_container}>
-                                            <Text style={styles.L_price}>32,99</Text>
+                                            <Text style={styles.L_price}>22,00</Text>
                                         </View>
                                         <View>
                                                 <TouchableOpacity  onPress={() => {
@@ -192,14 +192,26 @@ export default class HomeScene extends React.Component {
                                         </View>
                                     </View>
                                 </ListItem>
+
                             </List>
                         </Content>
                     </ListContainer>
                     <View>
-                        <Button onPress={()=>{}} block={true} style={{backgroundColor:application_colors.main_color}}>
+                        <TouchableOpacity onPress={()=>{alert('goto all posts')}}>
                             <Icon name={"list"} />
-                            <Text>Zobacz wszystkie wpisy</Text>
-                        </Button>
+                            <Text>Zobacz wszystkie wpisya</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View>
+                        <Fab
+                            active={false}
+                            direction="up"
+                            containerStyle={{ }}
+                            style={{ backgroundColor: 'forestgreen' }}
+                            position="bottomRight"
+                            onPress={() => alert('add')}>
+                            <Icon name="add" />
+                        </Fab>
                     </View>
                 </View>
             </Container>
