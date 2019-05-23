@@ -4,7 +4,7 @@ export default {
     main_color: '#1b70be',
     main_color_darker: '#195ca3',
 
-    add_color_float_btn: '#ffc700',
+    add_color_float_btn: '#3797e4',
 
     green_lighter: "#65c231",
     green_medium: "#4b892a",

@@ -2,11 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import {Platform, StyleSheet, View, TouchableOpacity} from 'react-native';
 import {Actions} from "react-native-router-flux";
-import {Content, Button, Text, List, ListItem, Icon, Container as ListContainer, Fab} from 'native-base';
+import {Button, Text, Icon, Fab} from 'native-base';
 import local_posts from "../../localfiles/local_posts";
 import local_categories from "../../localfiles/local_categories";
 import application_colors from "../../utilities/application_colors";
 import money from "../../utilities/money";
+import PostsList from "../AllPostsScene/components/PostsList";
 
 
 export default class HomeScene extends React.Component {
@@ -67,53 +68,7 @@ export default class HomeScene extends React.Component {
                     <Text style={styles.T_total_amount}>{money.format(this.state.total)}</Text>
                 </View>
                 <View flex={1}>
-                    <ListContainer>
-                        <Content>
-                            <List>
-                                {
-                                    this.state.posts.map(post => {
-                                        return (
-                                            <ListItem>
-                                                <View flex={1} style={styles.L_main_container}>
-                                                    <View style={styles.L_icon_container}>
-                                                        <Icon name={post.category_icon} type={post.category_iconGroup}
-                                                              style={[styles.L_icon, {
-                                                                  color: post.category_color,
-                                                                  borderColor: post.category_color
-                                                              }]}/>
-                                                    </View>
-                                                    <View flex={1} style={styles.L_text_container}>
-                                                        <View style={styles.L_date_container}>
-                                                            <Text style={styles.L_date}>
-                                                                {post.date}
-                                                            </Text>
-                                                        </View>
-                                                        <View style={styles.L_descr_container}>
-                                                            <Text style={styles.L_descr}>{post.category_name}</Text>
-                                                        </View>
-                                                    </View>
-                                                    <View style={styles.L_price_container}>
-                                                        <Text style={
-                                                            [
-                                                                styles.L_price,
-                                                                {color: (post.type === '-') ? application_colors.red_medium : application_colors.green_medium}
-                                                            ]
-                                                        }>
-                                                            {post.type}{money.format(post.amount)}
-                                                        </Text>
-                                                    </View>
-                                                    <View>
-                                                        <TouchableOpacity onPress={() => {
-                                                        }}><Icon name={'pencil'} type={'FontAwesome'} style={styles.L_edit}/></TouchableOpacity>
-                                                    </View>
-                                                </View>
-                                            </ListItem>
-                                        )
-                                    })
-                                }
-                            </List>
-                        </Content>
-                    </ListContainer>
+                    <PostsList posts={this.state.posts} showNotes={false}/>
                     <View style={styles.P_all_posts_container}>
                         <TouchableOpacity onPress={() => {
                             Actions.push("AllPostsScene")
@@ -164,73 +119,6 @@ const styles = StyleSheet.create({
     T_total_amount: {
         fontSize: 22,
         fontWeight: "bold"
-    },
-
-    L_main_container: {
-        flex: 1,
-        flexDirection: "row",
-        justifyContent: "space-between",
-    },
-
-    L_icon_container: {
-        marginRight: 10
-    },
-
-    L_icon: {
-        fontSize: 20,
-        borderWidth: 2,
-        borderStyle: 'solid',
-        borderRadius: 25,
-        borderColor: "blue",
-        color: "blue",
-        paddingLeft: 6,
-        paddingRight: 6,
-        paddingTop: 4,
-        paddingBottom: 2,
-        textAlign: "center",
-        marginTop: 3,
-        width: 30,
-
-    },
-
-    L_text_container: {
-        alignSelf: "flex-start"
-    },
-
-    L_date_container: {
-        alignSelf: "flex-start"
-    },
-
-    L_date: {
-        color: "grey",
-        fontSize: 12,
-    },
-
-    L_descr_container: {
-        alignSelf: "flex-start"
-    },
-
-    L_descr: {
-        fontSize: 14,
-    },
-
-    L_price_container: {},
-
-    L_price: {
-        marginTop: 10,
-        marginLeft: 5,
-        marginRight: 10,
-        fontWeight: "bold",
-        color: "firebrick"
-
-    },
-
-    L_edit_container: {},
-
-    L_edit: {
-        color: 'grey',
-        fontSize: 20,
-        marginTop: 10,
     },
 
     P_all_posts_container: {
