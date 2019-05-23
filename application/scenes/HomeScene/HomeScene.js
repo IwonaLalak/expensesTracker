@@ -52,6 +52,12 @@ export default class HomeScene extends React.Component {
                     ...item
                 }
         })
+
+        posts.sort((a,b)=>{
+            if(a.date > b.date) return -1
+            else return 1
+        })
+
         this.setState({
             posts: posts,
             total:total

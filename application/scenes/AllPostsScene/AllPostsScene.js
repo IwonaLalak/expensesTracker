@@ -98,6 +98,12 @@ export default class AllPostsScene extends React.Component {
             }
         })
 
+        posts.sort((a,b)=>{
+            if(a.date > b.date) return -1
+            else return 1
+        })
+
+
         this.setState({
             posts: posts,
             monthAmount: amount
@@ -131,7 +137,7 @@ export default class AllPostsScene extends React.Component {
                 <View flex={1}>
                     <PostsList posts={this.state.posts} showNotes={true}/>
                 </View>
-                <Text>all posts scene!!</Text>
+                <Text>all posts scene</Text>
             </Container>
         );
     }
