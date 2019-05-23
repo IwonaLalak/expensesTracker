@@ -16,26 +16,18 @@ export default class HomeScene extends React.Component {
         super(props);
         this.state = {
             posts: [],
-            categories: [],
             total:0,
         };
     }
 
     componentDidMount() {
-        this.getCategories();
+        this.getPosts();
     }
 
-    getCategories() {
-        this.setState({
-            categories: local_categories.categories
-        })
-        this.getPosts(local_categories.categories);
-    }
-
-    getPosts(categories) {
+    getPosts() {
         let total = 0;
         let posts = Array.from(local_posts.posts, item => {
-            let category = categories.find(c => c.id === item.category_id)
+            let category = local_categories.categories.find(c => c.id === item.category_id)
             if (Boolean(category))
                 if(item.type ==='-'){
                     total -= parseFloat(item.amount)
@@ -58,8 +50,10 @@ export default class HomeScene extends React.Component {
             else return 1
         })
 
+
+
         this.setState({
-            posts: posts,
+            posts: posts.slice(0,7),    // reduce to 7
             total:total
         })
     }
