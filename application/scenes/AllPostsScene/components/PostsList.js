@@ -7,7 +7,10 @@ import money from "../../../utilities/money";
 export default class PostsList extends React.Component {
     render() {
 
-
+        if(this.props.posts.length === 0){
+            return(<Text style={styles.noposts}>BRAK WPISÓW</Text>)
+        }
+        else
         return (
             <ListContainer>
                 <Content>
@@ -67,6 +70,13 @@ export default class PostsList extends React.Component {
 }
 
 const styles = StyleSheet.create({
+
+    noposts:{
+      textAlign: "center",
+      color:"grey",
+      fontSize:10,
+        marginTop:15
+    },
 
     L_main_container: {
         flex: 1,
