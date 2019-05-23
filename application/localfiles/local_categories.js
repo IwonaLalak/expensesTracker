@@ -10,7 +10,7 @@ export default{
         {id:7,name:'Rozrywka', icon:'music', iconGroup:'FontAwesome', color:'#149e8d'},
         {id:8,name:'Elektronika', icon:'laptop', iconGroup:'FontAwesome', color:'#53b3c7'},
         {id:9,name:'Apteka, kosmetyczne', icon:'pharmacy', iconGroup:'MaterialCommunityIcons', color:'#226ec5'},
-        {id:10,name:'Odzież i buty', icon:'shopping-bag', iconGroup:'FontAwesome', color:'#252ba8'},
+        {id:10,name:'Odzież i buty', icon:'tshirt', iconGroup:'FontAwesome5', color:'#252ba8'},
         {id:11,name:'Wynajem, media', icon:'home', iconGroup:'', color:'#5a190b'},
         {id:12,name:'Prezenty, datki', icon:'gift', iconGroup:'FontAwesome', color:'#e34eaa'},
         {id:13,name:'Pojazd', icon:'car', iconGroup:'', color:'#582a78'},

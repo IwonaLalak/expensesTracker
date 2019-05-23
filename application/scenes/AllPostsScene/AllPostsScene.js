@@ -8,6 +8,7 @@ import utils from "../../utilities/utils";
 import local_posts from "../../localfiles/local_posts";
 import local_categories from "../../localfiles/local_categories";
 import PostsList from "./components/PostsList";
+import money from "../../utilities/money";
 
 export default class AllPostsScene extends React.Component {
 
@@ -137,7 +138,21 @@ export default class AllPostsScene extends React.Component {
                 <View flex={1}>
                     <PostsList posts={this.state.posts} showNotes={true}/>
                 </View>
-                <Text>all posts scene</Text>
+                <View style={styles.S_sum_container}>
+                <Text style={styles.S_sum_text_static}>
+                    ZMIANA:
+                </Text>
+                <Text style={styles.S_sum_text}>
+                    {money.format(this.state.monthAmount)}
+                </Text>
+                    {
+                        this.state.monthAmount < 0?
+                            <Icon name={'trending-down'} style={styles.S_sum_icon}/>
+                            :
+                            <Icon name={'trending-up'} style={styles.S_sum_icon}/>
+                    }
+
+                </View>
             </Container>
         );
     }
@@ -181,5 +196,27 @@ const styles = StyleSheet.create({
         color: "white"
     },
 
+    S_sum_container:{
+        flexDirection: "row",
+        justifyContent:"center",
+        padding: 10
+    },
+
+    S_sum_icon:{
+        fontSize:18,
+        marginLeft:10,
+    },
+
+    S_sum_text_static:{
+        color:'grey',
+        marginRight:10,
+        fontSize:13
+    },
+
+    S_sum_text:{
+        fontSize:13,
+        fontWeight:"bold"
+
+    }
 
 });
