@@ -6,6 +6,7 @@ import {Content, Button, Text, List, ListItem, Icon, Container as ListContainer,
 import local_posts from "../../localfiles/local_posts";
 import local_categories from "../../localfiles/local_categories";
 import application_colors from "../../utilities/application_colors";
+import money from "../../utilities/money";
 
 
 export default class HomeScene extends React.Component {
@@ -14,24 +15,45 @@ export default class HomeScene extends React.Component {
         super(props);
         this.state = {
             posts: [],
-            categories: []
+            categories: [],
+            total:0,
         };
     }
 
     componentDidMount() {
         this.getCategories();
-        this.getPosts();
-    }
-
-    getPosts() {
-        this.setState({
-            posts: local_posts.posts
-        })
     }
 
     getCategories() {
         this.setState({
             categories: local_categories.categories
+        })
+        this.getPosts(local_categories.categories);
+    }
+
+    getPosts(categories) {
+        let total = 0;
+        let posts = Array.from(local_posts.posts, item => {
+            let category = categories.find(c => c.id === item.category_id)
+            if (Boolean(category))
+                if(item.type ==='-'){
+                    total -= parseFloat(item.amount)
+                }
+                else{
+                    total += parseFloat(item.amount)
+                }
+
+                return {
+                    category_name: category.name,
+                    category_icon: category.icon,
+                    category_iconGroup: category.iconGroup,
+                    category_color: category.color,
+                    ...item
+                }
+        })
+        this.setState({
+            posts: posts,
+            total:total
         })
     }
 
@@ -42,157 +64,53 @@ export default class HomeScene extends React.Component {
             <Container>
                 <View style={styles.T_total_container}>
                     <Text style={styles.T_total_text}>Saldo konta:</Text>
-                    <Text style={styles.T_total_amount}>2120,00 zł</Text>
+                    <Text style={styles.T_total_amount}>{money.format(this.state.total)}</Text>
                 </View>
                 <View flex={1}>
                     <ListContainer>
                         <Content>
                             <List>
-                                <ListItem>
-                                    <View flex={1} style={styles.L_main_container}>
-                                        <View style={styles.L_icon_container}>
-                                            <Icon name={'home'} style={styles.L_icon}/>
-                                        </View>
-                                        <View flex={1} style={styles.L_text_container}>
-                                            <View style={styles.L_date_container}>
-                                                <Text style={styles.L_date}>
-                                                    2019-05-01
-                                                </Text>
-                                            </View>
-                                            <View style={styles.L_descr_container}>
-                                                <Text style={styles.L_descr}>Artykuły spożywczae</Text>
-                                            </View>
-                                        </View>
-                                        <View style={styles.L_price_container}>
-                                            <Text style={styles.L_price}>+1124,50</Text>
-                                        </View>
-                                        <View>
-                                            <TouchableOpacity onPress={() => {
-                                            }}><Icon name={'pencil'} type={'FontAwesome'} style={styles.L_edit}/></TouchableOpacity>
-                                        </View>
-                                    </View>
-                                </ListItem>
-                                <ListItem>
-                                    <View flex={1} style={styles.L_main_container}>
-                                        <View style={styles.L_icon_container}>
-                                            <Icon name={'flash'} style={styles.L_icon}/>
-                                        </View>
-                                        <View flex={1} style={styles.L_text_container}>
-                                            <View style={styles.L_date_container}>
-                                                <Text style={styles.L_date}>
-                                                    2019-05-03
-                                                </Text>
-                                            </View>
-                                            <View style={styles.L_descr_container}>
-                                                <Text style={styles.L_descr}>Artykuły gospodarstwa domowego</Text>
-                                            </View>
-                                        </View>
-                                        <View style={styles.L_price_container}>
-                                            <Text style={styles.L_price}>-32,99</Text>
-                                        </View>
-                                        <View>
-                                            <TouchableOpacity onPress={() => {
-                                            }}><Icon name={'pencil'} type={'FontAwesome'} style={styles.L_edit}/></TouchableOpacity>
-                                        </View>
-                                    </View>
-                                </ListItem>
-                                <ListItem>
-                                    <View flex={1} style={styles.L_main_container}>
-                                        <View style={styles.L_icon_container}>
-                                            <Icon name={'cube'} style={styles.L_icon}/>
-                                        </View>
-                                        <View flex={1} style={styles.L_text_container}>
-                                            <View style={styles.L_date_container}>
-                                                <Text style={styles.L_date}>
-                                                    2019-05-03
-                                                </Text>
-                                            </View>
-                                            <View style={styles.L_descr_container}>
-                                                <Text style={styles.L_descr}>Rachunki</Text>
-                                            </View>
-                                        </View>
-                                        <View style={styles.L_price_container}>
-                                            <Text style={styles.L_price}>312,00</Text>
-                                        </View>
-                                        <View>
-                                            <TouchableOpacity onPress={() => {
-                                            }}><Icon name={'pencil'} type={'FontAwesome'} style={styles.L_edit}/></TouchableOpacity>
-                                        </View>
-                                    </View>
-                                </ListItem>
-                                <ListItem>
-                                    <View flex={1} style={styles.L_main_container}>
-                                        <View style={styles.L_icon_container}>
-                                            <Icon name={'flash'} style={styles.L_icon}/>
-                                        </View>
-                                        <View flex={1} style={styles.L_text_container}>
-                                            <View style={styles.L_date_container}>
-                                                <Text style={styles.L_date}>
-                                                    2019-05-03
-                                                </Text>
-                                            </View>
-                                            <View style={styles.L_descr_container}>
-                                                <Text style={styles.L_descr}>Artykuły gospodarstwa domowego</Text>
-                                            </View>
-                                        </View>
-                                        <View style={styles.L_price_container}>
-                                            <Text style={styles.L_price}>32,99</Text>
-                                        </View>
-                                        <View>
-                                            <TouchableOpacity onPress={() => {
-                                            }}><Icon name={'pencil'} type={'FontAwesome'} style={styles.L_edit}/></TouchableOpacity>
-                                        </View>
-                                    </View>
-                                </ListItem>
-                                <ListItem>
-                                    <View flex={1} style={styles.L_main_container}>
-                                        <View style={styles.L_icon_container}>
-                                            <Icon name={'cube'} style={styles.L_icon}/>
-                                        </View>
-                                        <View flex={1} style={styles.L_text_container}>
-                                            <View style={styles.L_date_container}>
-                                                <Text style={styles.L_date}>
-                                                    2019-05-03
-                                                </Text>
-                                            </View>
-                                            <View style={styles.L_descr_container}>
-                                                <Text style={styles.L_descr}>Rachunki</Text>
-                                            </View>
-                                        </View>
-                                        <View style={styles.L_price_container}>
-                                            <Text style={styles.L_price}>312,00</Text>
-                                        </View>
-                                        <View>
-                                            <TouchableOpacity onPress={() => {
-                                            }}><Icon name={'pencil'} type={'FontAwesome'} style={styles.L_edit}/></TouchableOpacity>
-                                        </View>
-                                    </View>
-                                </ListItem>
-                                <ListItem>
-                                    <View flex={1} style={styles.L_main_container}>
-                                        <View style={styles.L_icon_container}>
-                                            <Icon name={'logo-apple'} style={styles.L_icon}/>
-                                        </View>
-                                        <View flex={1} style={styles.L_text_container}>
-                                            <View style={styles.L_date_container}>
-                                                <Text style={styles.L_date}>
-                                                    2019-05-03
-                                                </Text>
-                                            </View>
-                                            <View style={styles.L_descr_container}>
-                                                <Text style={styles.L_descr}>Rachunki</Text>
-                                            </View>
-                                        </View>
-                                        <View style={styles.L_price_container}>
-                                            <Text style={styles.L_price}>22,00</Text>
-                                        </View>
-                                        <View>
-                                            <TouchableOpacity onPress={() => {
-                                            }}><Icon name={'pencil'} type={'FontAwesome'} style={styles.L_edit}/></TouchableOpacity>
-                                        </View>
-                                    </View>
-                                </ListItem>
-
+                                {
+                                    this.state.posts.map(post => {
+                                        return (
+                                            <ListItem>
+                                                <View flex={1} style={styles.L_main_container}>
+                                                    <View style={styles.L_icon_container}>
+                                                        <Icon name={post.category_icon} type={post.category_iconGroup}
+                                                              style={[styles.L_icon, {
+                                                                  color: post.category_color,
+                                                                  borderColor: post.category_color
+                                                              }]}/>
+                                                    </View>
+                                                    <View flex={1} style={styles.L_text_container}>
+                                                        <View style={styles.L_date_container}>
+                                                            <Text style={styles.L_date}>
+                                                                {post.date}
+                                                            </Text>
+                                                        </View>
+                                                        <View style={styles.L_descr_container}>
+                                                            <Text style={styles.L_descr}>{post.category_name}</Text>
+                                                        </View>
+                                                    </View>
+                                                    <View style={styles.L_price_container}>
+                                                        <Text style={
+                                                            [
+                                                                styles.L_price,
+                                                                {color: (post.type === '-') ? application_colors.red_medium : application_colors.green_medium}
+                                                            ]
+                                                        }>
+                                                            {post.type}{money.format(post.amount)}
+                                                        </Text>
+                                                    </View>
+                                                    <View>
+                                                        <TouchableOpacity onPress={() => {
+                                                        }}><Icon name={'pencil'} type={'FontAwesome'} style={styles.L_edit}/></TouchableOpacity>
+                                                    </View>
+                                                </View>
+                                            </ListItem>
+                                        )
+                                    })
+                                }
                             </List>
                         </Content>
                     </ListContainer>
@@ -334,8 +252,8 @@ const styles = StyleSheet.create({
 
     P_text: {
         color: "grey",
-        marginLeft:5,
-        fontSize:13,
+        marginLeft: 5,
+        fontSize: 13,
     }
 
 });
