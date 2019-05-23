@@ -9,6 +9,7 @@ import {Button, Icon, Text} from "native-base";
 import {Dimensions,View, TouchableOpacity, StyleSheet} from 'react-native';
 import application_colors from "../../utilities/application_colors";
 import CategoriesScene from "../../scenes/CategoriesScene/CategoriesScene";
+import AllPostsScene from "../../scenes/AllPostsScene/AllPostsScene";
 
 export default class RouterComponent extends React.Component {
     constructor(props) {
@@ -51,7 +52,7 @@ export default class RouterComponent extends React.Component {
                             </TouchableOpacity>
                         </View>
                         <View>
-                            {
+                            {/*{
                                 //Actions.currentScene === "HomeScene"?
                                 this.state.isQuickAddVisible?
                                     <View style={styles.quickAddContainter}>
@@ -61,7 +62,7 @@ export default class RouterComponent extends React.Component {
                                     </View>
                                     :
                                     <View></View>
-                            }
+                            }*/}
 
                         </View>
                     </View>
@@ -130,6 +131,13 @@ const scenes = Actions.create(
             name="AddScene"
             component={AddScene}
             title="Scena dodawania"
+            hideNavBar
+        />
+        <Scene
+            key="AllPostsScene"
+            name="AllPostsScene"
+            component={AllPostsScene}
+            title="Scena wszytskich postów"
             hideNavBar
         />
         <Scene

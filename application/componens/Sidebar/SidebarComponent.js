@@ -28,6 +28,9 @@ export default class SidebarComponent extends React.Component {
                         <TouchableOpacity onPress={()=>{Actions.push("AddScene"); this.props.closeDrawer("AddScene")}}>
                             <Text style={styles.menuLink}>NOWY WPIS</Text>
                         </TouchableOpacity>
+                        <TouchableOpacity onPress={()=>{Actions.push("AllPostsScene"); this.props.closeDrawer("AllPostsScene")}}>
+                            <Text style={styles.menuLink}>WSZYSTKIE WPISY</Text>
+                        </TouchableOpacity>
                         <TouchableOpacity onPress={()=>{Actions.push("CategoriesScene"); this.props.closeDrawer("CategoriesScene")}}>
                             <Text style={styles.menuLink}>KATEGORIE</Text>
                         </TouchableOpacity>

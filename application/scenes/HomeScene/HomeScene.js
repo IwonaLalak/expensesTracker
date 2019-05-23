@@ -67,8 +67,8 @@ export default class HomeScene extends React.Component {
                                             <Text style={styles.L_price}>+1124,50</Text>
                                         </View>
                                         <View>
-                                                <TouchableOpacity  onPress={() => {
-                                                }}><Icon name={'pencil'} type={'FontAwesome'} style={styles.L_edit}/></TouchableOpacity>
+                                            <TouchableOpacity onPress={() => {
+                                            }}><Icon name={'pencil'} type={'FontAwesome'} style={styles.L_edit}/></TouchableOpacity>
                                         </View>
                                     </View>
                                 </ListItem>
@@ -91,8 +91,8 @@ export default class HomeScene extends React.Component {
                                             <Text style={styles.L_price}>-32,99</Text>
                                         </View>
                                         <View>
-                                                <TouchableOpacity  onPress={() => {
-                                                }}><Icon name={'pencil'} type={'FontAwesome'} style={styles.L_edit}/></TouchableOpacity>
+                                            <TouchableOpacity onPress={() => {
+                                            }}><Icon name={'pencil'} type={'FontAwesome'} style={styles.L_edit}/></TouchableOpacity>
                                         </View>
                                     </View>
                                 </ListItem>
@@ -115,8 +115,8 @@ export default class HomeScene extends React.Component {
                                             <Text style={styles.L_price}>312,00</Text>
                                         </View>
                                         <View>
-                                                <TouchableOpacity  onPress={() => {
-                                                }}><Icon name={'pencil'} type={'FontAwesome'} style={styles.L_edit}/></TouchableOpacity>
+                                            <TouchableOpacity onPress={() => {
+                                            }}><Icon name={'pencil'} type={'FontAwesome'} style={styles.L_edit}/></TouchableOpacity>
                                         </View>
                                     </View>
                                 </ListItem>
@@ -139,8 +139,8 @@ export default class HomeScene extends React.Component {
                                             <Text style={styles.L_price}>32,99</Text>
                                         </View>
                                         <View>
-                                                <TouchableOpacity  onPress={() => {
-                                                }}><Icon name={'pencil'} type={'FontAwesome'} style={styles.L_edit}/></TouchableOpacity>
+                                            <TouchableOpacity onPress={() => {
+                                            }}><Icon name={'pencil'} type={'FontAwesome'} style={styles.L_edit}/></TouchableOpacity>
                                         </View>
                                     </View>
                                 </ListItem>
@@ -163,8 +163,8 @@ export default class HomeScene extends React.Component {
                                             <Text style={styles.L_price}>312,00</Text>
                                         </View>
                                         <View>
-                                                <TouchableOpacity  onPress={() => {
-                                                }}><Icon name={'pencil'} type={'FontAwesome'} style={styles.L_edit}/></TouchableOpacity>
+                                            <TouchableOpacity onPress={() => {
+                                            }}><Icon name={'pencil'} type={'FontAwesome'} style={styles.L_edit}/></TouchableOpacity>
                                         </View>
                                     </View>
                                 </ListItem>
@@ -187,8 +187,8 @@ export default class HomeScene extends React.Component {
                                             <Text style={styles.L_price}>22,00</Text>
                                         </View>
                                         <View>
-                                                <TouchableOpacity  onPress={() => {
-                                                }}><Icon name={'pencil'} type={'FontAwesome'} style={styles.L_edit}/></TouchableOpacity>
+                                            <TouchableOpacity onPress={() => {
+                                            }}><Icon name={'pencil'} type={'FontAwesome'} style={styles.L_edit}/></TouchableOpacity>
                                         </View>
                                     </View>
                                 </ListItem>
@@ -196,21 +196,23 @@ export default class HomeScene extends React.Component {
                             </List>
                         </Content>
                     </ListContainer>
-                    <View>
-                        <TouchableOpacity onPress={()=>{alert('goto all posts')}}>
-                            <Icon name={"list"} />
-                            <Text>Zobacz wszystkie wpisya</Text>
+                    <View style={styles.P_all_posts_container}>
+                        <TouchableOpacity onPress={() => {
+                            Actions.push("AllPostsScene")
+                        }} style={styles.P_all_posts_touchable}>
+                            <Icon name={"list"} style={styles.P_icon}/>
+                            <Text style={styles.P_text}>{'Zobacz wszystkie wpisy'.toUpperCase()}</Text>
                         </TouchableOpacity>
                     </View>
                     <View>
                         <Fab
                             active={false}
                             direction="up"
-                            containerStyle={{ }}
-                            style={{ backgroundColor: 'forestgreen' }}
+                            containerStyle={{}}
+                            style={{backgroundColor: application_colors.add_color_float_btn}}
                             position="bottomRight"
-                            onPress={() => alert('add')}>
-                            <Icon name="add" />
+                            onPress={() => Actions.push("AddScene")}>
+                            <Icon name="add"/>
                         </Fab>
                     </View>
                 </View>
@@ -228,20 +230,20 @@ const Container = styled.View`
 
 
 const styles = StyleSheet.create({
-    T_total_container:{
+    T_total_container: {
         alignSelf: "center",
         flexDirection: "row",
-        padding:14,
+        padding: 14,
     },
 
-    T_total_text:{
+    T_total_text: {
         fontWeight: "bold",
-        color:"grey",
-        marginTop:6,
-        marginRight:6
+        color: "grey",
+        marginTop: 6,
+        marginRight: 6
     },
 
-    T_total_amount:{
+    T_total_amount: {
         fontSize: 22,
         fontWeight: "bold"
     },
@@ -268,8 +270,8 @@ const styles = StyleSheet.create({
         paddingTop: 4,
         paddingBottom: 2,
         textAlign: "center",
-        marginTop:3,
-        width:30,
+        marginTop: 3,
+        width: 30,
 
     },
 
@@ -294,27 +296,47 @@ const styles = StyleSheet.create({
         fontSize: 14,
     },
 
-    L_price_container: {
-    },
+    L_price_container: {},
 
     L_price: {
-        marginTop:10,
+        marginTop: 10,
         marginLeft: 5,
-        marginRight:10,
-        fontWeight:"bold",
-        color:"firebrick"
+        marginRight: 10,
+        fontWeight: "bold",
+        color: "firebrick"
 
     },
 
-    L_edit_container:{
+    L_edit_container: {},
 
+    L_edit: {
+        color: 'grey',
+        fontSize: 20,
+        marginTop: 10,
     },
 
-    L_edit:{
-        color:'grey',
-        fontSize:20,
-        marginTop:10,
+    P_all_posts_container: {
+        height: 50
     },
+
+    P_all_posts_touchable: {
+        marginTop: 15,
+        marginLeft: 25,
+        flex: 1,
+        flexDirection: "row",
+        justifyContent: "flex-start",
+    },
+
+    P_icon: {
+        fontSize: 18,
+        color: "grey"
+    },
+
+    P_text: {
+        color: "grey",
+        marginLeft:5,
+        fontSize:13,
+    }
 
 });
 
