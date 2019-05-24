@@ -146,7 +146,7 @@ export default class AllPostsScene extends React.Component {
                     {money.format(this.state.monthAmount)}
                 </Text>
                     {
-                        this.state.monthAmount < 0?
+                        this.state.monthAmount <= 0?
                             <Icon name={'trending-down'} style={styles.S_sum_icon}/>
                             :
                             <Icon name={'trending-up'} style={styles.S_sum_icon}/>

@@ -10,6 +10,7 @@ import {Dimensions,View, TouchableOpacity, StyleSheet} from 'react-native';
 import application_colors from "../../utilities/application_colors";
 import CategoriesScene from "../../scenes/CategoriesScene/CategoriesScene";
 import AllPostsScene from "../../scenes/AllPostsScene/AllPostsScene";
+import AddCategory from "../../scenes/AddCategory/AddCategory";
 
 export default class RouterComponent extends React.Component {
     constructor(props) {
@@ -145,6 +146,13 @@ const scenes = Actions.create(
             name="CategoriesScene"
             component={CategoriesScene}
             title="Scena kategorii"
+            hideNavBar
+        />
+        <Scene
+            key="AddCategory"
+            name="AddCategory"
+            component={AddCategory}
+            title="Scena dodania kategorii"
             hideNavBar
         />
         <Scene

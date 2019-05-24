@@ -1,18 +1,44 @@
 import React from 'react';
 import styled from 'styled-components';
 import {Platform, StyleSheet, Text, View,} from 'react-native';
+import local_categories from "../../localfiles/local_categories";
+import CategoriesList from "./components/CategoriesList";
+import {Fab, Icon} from "native-base";
+import application_colors from "../../utilities/application_colors";
+import {Actions} from "react-native-router-flux";
 
 export default class CategoriesScene extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            categories:[]
+        };
+    }
+
+    componentDidMount(){
+        this.setState({
+            categories: local_categories.categories
+        })
     }
 
     render() {
         return (
             <Container>
-                <Text>categories scene</Text>
+                                <View flex={1}>
+                    <CategoriesList categories={this.state.categories}/>
+                </View>
+                <View>
+                    <Fab
+                        active={false}
+                        direction="up"
+                        containerStyle={{}}
+                        style={{backgroundColor: application_colors.add_color_float_btn}}
+                        position="bottomRight"
+                        onPress={() => Actions.push("AddCategory")}>
+                        <Icon name="add"/>
+                    </Fab>
+                </View>
             </Container>
         );
     }
