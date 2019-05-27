@@ -167,7 +167,6 @@ const Container = styled.View`
 
 const styles = StyleSheet.create({
     H_container: {
-
         flexDirection: "row",
         padding: 14,
         backgroundColor: application_colors.main_color
