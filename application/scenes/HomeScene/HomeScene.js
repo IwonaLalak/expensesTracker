@@ -84,7 +84,7 @@ export default class HomeScene extends React.Component {
                             containerStyle={{}}
                             style={{backgroundColor: application_colors.add_color_float_btn}}
                             position="bottomRight"
-                            onPress={() => Actions.push("AddCategory")}>
+                            onPress={() => Actions.push("AddScene")}>
                             <Icon name="add"/>
                         </Fab>
                     </View>

@@ -17,9 +17,11 @@ export default class AddScene extends React.Component {
         return (
             <Container>
                 <Text>add scene</Text>
+                <View>
                 <Button title={"Goto home"} onPress={()=>{
                  Actions.pop();
                 }} />
+                </View>
                 <View
                     style={{
                         flex: 1,

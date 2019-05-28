@@ -1,8 +1,7 @@
 import React from 'react';
 import {Content, Icon, List, Container as ListContainer, ListItem, Text} from "native-base";
 import {StyleSheet, TouchableOpacity, View} from "react-native";
-import application_colors from "../../../utilities/application_colors";
-import money from "../../../utilities/money";
+import {Actions} from "react-native-router-flux";
 
 export default class CategoriesList extends React.Component {
 
@@ -35,6 +34,7 @@ export default class CategoriesList extends React.Component {
                                             </View>
                                             <View>
                                                 <TouchableOpacity onPress={() => {
+                                                    Actions.push("AddCategory", {category:category, editMode:true})
                                                 }}><Icon name={'pencil'} type={'FontAwesome'} style={styles.L_edit}/></TouchableOpacity>
                                             </View>
                                         </View>
