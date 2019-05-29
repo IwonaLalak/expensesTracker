@@ -1,13 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import {Platform, ScrollView, StyleSheet, View, TouchableOpacity} from 'react-native';
-import {Header, Content, Button, Text, Form, Icon} from 'native-base';
+import {Header, Content, Button, Text, Form, Icon, DatePicker, Textarea} from 'native-base';
 import {Actions} from "react-native-router-flux";
 import application_colors from "../../utilities/application_colors";
 import {TextInputMask} from "react-native-masked-text";
 import {CustomPicker} from "react-native-custom-picker";
-import tinycolor from "tinycolor2";
 import local_categories from "../../localfiles/local_categories";
+import moment from "moment";
+
 
 export default class AddScene extends React.Component {
 
@@ -16,8 +17,13 @@ export default class AddScene extends React.Component {
         this.state = {
             type: '-',
             amount: 0,
-            category:null
+            category:null,
+            date:new Date(),
+
         };
+        moment.locale('pl',{
+            months : 'styczeń_luty_marzec_kwiecień_maj_czerwiec_lipiec_sierpień_wrzesień_październik_listopad_grudzień'.split('_'),
+        })
     }
 
     componentDidMount(){
@@ -64,6 +70,10 @@ export default class AddScene extends React.Component {
                 </View>
             </View>
         )
+    }
+
+    setDate(newDate) {
+        this.setState({ date: newDate });
     }
 
     render() {
@@ -152,6 +162,29 @@ export default class AddScene extends React.Component {
                                     />
                                 </View>
                             </View>
+                            <View style={styles.F_date_container}>
+                                <Text style={styles.F_date_label}>
+                                    Data wpisu:
+                                </Text>
+                                <DatePicker
+                                    defaultDate={new Date()}
+                                    locale={"pl"}
+                                    timeZoneOffsetInMinutes={undefined}
+                                    modalTransparent={false}
+                                    animationType={"fade"}
+                                    androidMode={"default"}
+                                    textStyle={styles.F_date_date}
+                                    onDateChange={this.setDate}
+                                    disabled={false}
+                                    formatChosenDate={date => {return moment(date).format('DD MMMM YYYY');}}
+                                />
+                            </View>
+                            <View style={styles.F_note_container}>
+                                <Text style={styles.F_note_label}>
+                                    Notatka:
+                                </Text>
+                                <Textarea rowSpan={3} bordered style={styles.F_note_textarea}/>
+                            </View>
                         </Form>
                     </Content>
                 </ScrollView>
@@ -188,7 +221,6 @@ const styles = StyleSheet.create({
 
     F_amount_container: {
         flex: 1,
-        marginRight: 10
     },
 
     F_amount_input: {
@@ -204,7 +236,7 @@ const styles = StyleSheet.create({
     F_type_container: {
         flex: 1,
         flexDirection: 'row',
-        marginLeft: 10
+        marginLeft: 20
     },
 
     F_type_container_spend: {
@@ -294,5 +326,45 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         marginTop: 3,
     },
+
+    F_date_container:{
+        flex:1,
+        flexDirection:'row',
+        marginLeft:15,
+        marginRight:15,
+        borderBottomWidth: 1,
+        borderColor: "#ddd",
+        paddingBottom:5,
+    },
+
+    F_date_label:{
+        color:"gray",
+        marginRight:15,
+        marginTop:5
+    },
+    F_date_date:{
+        padding:5,
+        backgroundColor:"#ffffff",
+        borderWidth:1,
+        borderColor:"#ffffff",
+        borderRadius:5
+
+    },
+
+    F_note_container:{
+        padding:15
+    },
+    F_note_label:{
+        color:"gray",
+    },
+    F_note_textarea:{
+        backgroundColor:"#ffffff",
+        borderWidth:1,
+        borderColor:"#ffffff",
+        borderRadius:5
+    },
+
+
+
 
 });
