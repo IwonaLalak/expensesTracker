@@ -59,6 +59,7 @@ export default class PostsList extends React.Component {
                                             </View>
                                             <View>
                                                 <TouchableOpacity onPress={() => {
+                                                    Actions.push("AddScene",{post:post, editMode:true})
                                                 }}><Icon name={'pencil'} type={'FontAwesome'} style={styles.L_edit}/></TouchableOpacity>
                                             </View>
                                         </TouchableOpacity>

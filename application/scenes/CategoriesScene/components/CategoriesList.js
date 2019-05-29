@@ -21,8 +21,8 @@ export default class CategoriesList extends React.Component {
                                     <ListItem key={category.id}>
                                         <TouchableOpacity flex={1} style={styles.L_main_container}
                                                           onPress={() => {
-                                                Actions.push("AddCategory", {category:category, editMode:true})
-                                            }}>
+                                                              Actions.push("AddCategory", {category: category, editMode: true})
+                                                          }}>
                                             <View style={styles.L_icon_container}>
                                                 <Icon name={category.icon} type={category.iconGroup}
                                                       style={[styles.L_icon, {
@@ -31,16 +31,16 @@ export default class CategoriesList extends React.Component {
                                                       }]}/>
                                             </View>
                                             <View flex={1} style={styles.L_text_container}>
-                                                  <View style={styles.L_descr_container}>
+                                                <View style={styles.L_descr_container}>
                                                     <Text style={styles.L_descr}>{category.name}</Text>
                                                 </View>
                                             </View>
                                             <View>
                                                 <TouchableOpacity onPress={() => {
-                                                    Actions.push("AddCategory", {category:category, editMode:true})
+                                                    Actions.push("AddCategory", {category: category, editMode: true})
                                                 }}><Icon name={'pencil'} type={'FontAwesome'} style={styles.L_edit}/></TouchableOpacity>
                                             </View>
-                                            </TouchableOpacity>
+                                        </TouchableOpacity>
                                         {/*</View>*/}
                                     </ListItem>
                                 )
@@ -57,11 +57,11 @@ export default class CategoriesList extends React.Component {
 
 const styles = StyleSheet.create({
 
-    noposts:{
+    noposts: {
         textAlign: "center",
-        color:"grey",
-        fontSize:10,
-        marginTop:15
+        color: "grey",
+        fontSize: 10,
+        marginTop: 15
     },
 
     L_main_container: {
@@ -110,8 +110,8 @@ const styles = StyleSheet.create({
 
     L_descr: {
         fontSize: 14,
-        alignSelf:'flex-start',
-        marginTop:11
+        alignSelf: 'flex-start',
+        marginTop: 11
     },
 
     L_edit_container: {},

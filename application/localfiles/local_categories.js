@@ -1,11 +1,12 @@
 export default{
     categories:[
 
+        {id:0,name:'Nieznane', icon:'question-circle', iconGroup:'FontAwesome', color:'#858285'},
         {id:1,name:'Przychód', icon:'money', iconGroup:'FontAwesome', color:'#39a208'},
         {id:2,name:'Inne', icon:'question', iconGroup:'FontAwesome', color:'#5f6061'},
         {id:3,name:'Artykuły spożywcze', icon:'apple-alt', iconGroup:'FontAwesome5', color:'#ff932e'},
         {id:4,name:'Zachcianki spożywcze', icon:'food', iconGroup:'MaterialCommunityIcons', color:'#f7611b'},
-        {id:5,name:'Restauracja, bar, jedzenie na mieście', icon:'cutlery', iconGroup:'FontAwesome', color:'#a4463e'},
+        {id:5,name:'Restauracja, bar, jedzenie', icon:'cutlery', iconGroup:'FontAwesome', color:'#a4463e'},
         {id:6,name:'Transport publiczny', icon:'bus', iconGroup:'', color:'#5b7548'},
         {id:7,name:'Rozrywka', icon:'music', iconGroup:'FontAwesome', color:'#149e8d'},
         {id:8,name:'Elektronika', icon:'laptop', iconGroup:'FontAwesome', color:'#53b3c7'},

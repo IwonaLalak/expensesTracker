@@ -21,7 +21,6 @@ export default class AddCategory extends React.Component {
     }
 
     componentDidMount() {
-        console.log(this.props)
         if (this.props.editMode) {
             this.setState({
                 color: tinycolor(this.props.category.color).toHsl(),
@@ -29,7 +28,6 @@ export default class AddCategory extends React.Component {
                 name: this.props.category.name
             })
         }
-
     }
 
     updateHue = h => this.setState({color: {...this.state.color, h}});
@@ -101,7 +99,8 @@ export default class AddCategory extends React.Component {
                                                value={this.state.name}
                                                style={{
                                                    paddingLeft: 5
-                                               }}/>
+                                               }}
+                                        />
                                     </Item>
                                 </View>
                                 <View style={styles.F_container_icon}>
@@ -219,7 +218,8 @@ const styles = StyleSheet.create({
     },
 
     F_container_name: {
-        flex: 1
+        flex: 1,
+        paddingRight:15
     },
 
     F_text_name: {
@@ -229,7 +229,8 @@ const styles = StyleSheet.create({
     },
 
     F_container_icon: {
-        flex: 1
+        flex: 1,
+        paddingRight:15
     },
 
     F_container_color: {
@@ -314,7 +315,20 @@ const styles = StyleSheet.create({
 
     P_optionIcon: {
         marginLeft: 15,
-        color: "black"
+        fontSize: 20,
+        borderWidth: 2,
+        borderStyle: 'solid',
+        borderRadius: 25,
+        borderColor: "black",
+        color: "black",
+        paddingLeft: 6,
+        paddingRight: 6,
+        paddingTop: 4,
+        paddingBottom: 2,
+        textAlign: "center",
+        marginTop: 3,
+        width: 30,
+
     },
 
     P_optionText: {
