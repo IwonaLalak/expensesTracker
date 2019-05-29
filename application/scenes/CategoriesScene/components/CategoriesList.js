@@ -19,7 +19,10 @@ export default class CategoriesList extends React.Component {
                             this.props.categories.map(category => {
                                 return (
                                     <ListItem key={category.id}>
-                                        <View flex={1} style={styles.L_main_container}>
+                                        <TouchableOpacity flex={1} style={styles.L_main_container}
+                                                          onPress={() => {
+                                                Actions.push("AddCategory", {category:category, editMode:true})
+                                            }}>
                                             <View style={styles.L_icon_container}>
                                                 <Icon name={category.icon} type={category.iconGroup}
                                                       style={[styles.L_icon, {
@@ -37,7 +40,8 @@ export default class CategoriesList extends React.Component {
                                                     Actions.push("AddCategory", {category:category, editMode:true})
                                                 }}><Icon name={'pencil'} type={'FontAwesome'} style={styles.L_edit}/></TouchableOpacity>
                                             </View>
-                                        </View>
+                                            </TouchableOpacity>
+                                        {/*</View>*/}
                                     </ListItem>
                                 )
                             })
@@ -106,25 +110,8 @@ const styles = StyleSheet.create({
 
     L_descr: {
         fontSize: 14,
-        alignSelf:'flex-start'
-    },
-
-    L_note:{
-        fontSize:10,
-        color:"grey",
-        fontStyle:'italic',
-        alignSelf:'flex-start'
-    },
-
-    L_price_container: {},
-
-    L_price: {
-        marginTop: 10,
-        marginLeft: 5,
-        marginRight: 10,
-        fontWeight: "bold",
-        color: "firebrick"
-
+        alignSelf:'flex-start',
+        marginTop:11
     },
 
     L_edit_container: {},
@@ -132,7 +119,7 @@ const styles = StyleSheet.create({
     L_edit: {
         color: 'grey',
         fontSize: 20,
-        marginTop: 10,
+        marginTop: 8,
     },
 
 });

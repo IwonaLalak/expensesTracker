@@ -3,6 +3,7 @@ import {Content, Icon, List, Container as ListContainer, ListItem, Text} from "n
 import {StyleSheet, TouchableOpacity, View} from "react-native";
 import application_colors from "../../../utilities/application_colors";
 import money from "../../../utilities/money";
+import {Actions} from "react-native-router-flux";
 
 export default class PostsList extends React.Component {
     render() {
@@ -19,7 +20,10 @@ export default class PostsList extends React.Component {
                             this.props.posts.map(post => {
                                 return (
                                     <ListItem key={post.id}>
-                                        <View flex={1} style={styles.L_main_container}>
+                                        <TouchableOpacity flex={1} style={styles.L_main_container}
+                                                          onPress={() => {
+                                                              Actions.push("AddScene",{post:post, editMode:true})
+                                                          }}>
                                             <View style={styles.L_icon_container}>
                                                 <Icon name={post.category_icon} type={post.category_iconGroup}
                                                       style={[styles.L_icon, {
@@ -57,7 +61,7 @@ export default class PostsList extends React.Component {
                                                 <TouchableOpacity onPress={() => {
                                                 }}><Icon name={'pencil'} type={'FontAwesome'} style={styles.L_edit}/></TouchableOpacity>
                                             </View>
-                                        </View>
+                                        </TouchableOpacity>
                                     </ListItem>
                                 )
                             })
@@ -136,7 +140,7 @@ const styles = StyleSheet.create({
     L_price_container: {},
 
     L_price: {
-        marginTop: 10,
+        marginTop: 8,
         marginLeft: 5,
         marginRight: 10,
         fontWeight: "bold",
@@ -149,7 +153,7 @@ const styles = StyleSheet.create({
     L_edit: {
         color: 'grey',
         fontSize: 20,
-        marginTop: 10,
+        marginTop: 8,
     },
 
 });

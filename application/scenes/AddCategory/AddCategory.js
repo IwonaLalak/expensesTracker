@@ -80,7 +80,13 @@ export default class AddCategory extends React.Component {
             <Container>
                 <View style={styles.H_container}>
                     <Text style={styles.H_container_text}>
-                        DODAJ NOWĄ KATEGORIĘ
+                        {
+                            (this.props.editMode)?
+                                'EDYTUJ KATEGORIĘ'
+                                :
+                                'DODAJ NOWĄ KATEGORIĘ'
+                        }
+
                     </Text>
                 </View>
                 <ScrollView>

@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Platform, StyleSheet, View} from 'react-native';
-import {Header, Content, Button, Text} from 'native-base';
+import {Platform, ScrollView, StyleSheet, View} from 'react-native';
+import {Header, Content, Button, Text, Form} from 'native-base';
 import {Actions} from "react-native-router-flux";
+import application_colors from "../../utilities/application_colors";
 
 export default class AddScene extends React.Component {
 
@@ -16,30 +17,28 @@ export default class AddScene extends React.Component {
     render() {
         return (
             <Container>
-                <Text>add scene</Text>
-                <View>
-                <Button title={"Goto home"} onPress={()=>{
-                 Actions.pop();
-                }} />
+                <View style={styles.H_container}>
+                    <Text style={styles.H_container_text}>
+                        DODAJ NOWY WPIS
+                    </Text>
                 </View>
-                <View
-                    style={{
-                        flex: 1,
-                        flexDirection: 'row',
-                    }}
-                >
-                    <View style={{flex:1}}>
-                        <Button full={true}>
-                            <Text>Click Me!</Text>
-                        </Button>
-                    </View>
-                    <View style={{flex:1}}>
-                        <Button danger={true} full={true}>
-                            <Text>Click Me!</Text>
-                        </Button>
+                <ScrollView>
+                    <Content>
+                        <Form>
+                            <View>
+                                <View>
 
-                    </View>
-                </View>
+                                </View>
+                                <View>
+
+                                </View>
+                            </View>
+                            <View>
+
+                            </View>
+                        </Form>
+                    </Content>
+                </ScrollView>
             </Container>
         );
     }
@@ -52,3 +51,16 @@ const Container = styled.View`
     flexDirection: column;
     justifyContent: space-between;
 `;
+
+const styles = StyleSheet.create({
+
+    H_container: {
+        backgroundColor: application_colors.main_color,
+    },
+
+    H_container_text: {
+        textAlign: "center",
+        color: "white",
+        padding: 14,
+    },
+});
