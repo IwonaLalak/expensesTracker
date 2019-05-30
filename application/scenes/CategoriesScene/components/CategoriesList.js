@@ -57,13 +57,6 @@ export default class CategoriesList extends React.Component {
 
 const styles = StyleSheet.create({
 
-    noposts: {
-        textAlign: "center",
-        color: "grey",
-        fontSize: 10,
-        marginTop: 15
-    },
-
     L_main_container: {
         flex: 1,
         flexDirection: "row",

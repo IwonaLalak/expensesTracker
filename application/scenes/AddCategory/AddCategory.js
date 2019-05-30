@@ -88,7 +88,7 @@ export default class AddCategory extends React.Component {
                     </Text>
                 </View>
                 <ScrollView>
-                    <Content>
+                    <Content style={{marginBottom:50}}>
                         <Form>
                             <View style={styles.F_container}>
                                 <View style={styles.F_container_name}>
@@ -120,17 +120,6 @@ export default class AddCategory extends React.Component {
                                     </View>
                                 </View>
                                 <View style={styles.F_container_color}>
-                                    {/*<View style={{flex:1,flexDirection:'row'}}>
-                                <Text style={styles.F_text_color}>Obecny kolor</Text>
-                                    <View style={{
-                                        backgroundColor:tinycolor(this.state.color).toHexString(),
-                                        height:20,
-                                        width:20,
-                                        marginLeft:15,
-                                        marginTop:10
-                                    }}>
-                                        </View>
-                                </View>*/}
                                     <View flex={1}>
                                         <HueSlider
                                             style={styles.sliderRow}
@@ -236,13 +225,6 @@ const styles = StyleSheet.create({
     F_container_color: {
         marginRight: 15,
         flex: 1
-    },
-
-    F_text_color: {
-        fontSize: 16,
-        color: "grey",
-        marginLeft: 15,
-        marginTop: 10,
     },
 
     P_container: {

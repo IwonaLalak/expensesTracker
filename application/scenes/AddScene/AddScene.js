@@ -27,13 +27,18 @@ export default class AddScene extends React.Component {
     }
 
     componentDidMount(){
-        setTimeout(function () {
-            this.refs['_amountRef'].getElement().focus();
-        }.bind(this),200)
+        if(this.props.editMode){
 
-        this.setState({
-            category:{id:"-1",name:'Nieznane', icon:'question-circle', iconGroup:'FontAwesome', color:'#858285'}
-        })
+        }
+        else{
+            setTimeout(function () {
+                this.refs['_amountRef'].getElement().focus();
+            }.bind(this),200)
+
+            this.setState({
+                category:{id:"-1",name:'Nieznane', icon:'question-circle', iconGroup:'FontAwesome', color:'#858285'}
+            })
+        }
     }
 
     renderHeader() {
@@ -90,7 +95,7 @@ export default class AddScene extends React.Component {
                     </Text>
                 </View>
                 <ScrollView>
-                    <Content>
+                    <Content style={{marginBottom:50}}>
                         <Form>
                             <View style={styles.F_currency_container}>
                                 <View style={styles.F_amount_container}>
@@ -188,6 +193,33 @@ export default class AddScene extends React.Component {
                         </Form>
                     </Content>
                 </ScrollView>
+                <View style={styles.B_container}>
+                    <View style={{flex: 1, flexDirection: "row"}}>
+                        <View flex={1}>
+                            {
+                                (this.props.editMode)?
+                                    <Button danger={true} full={true}>
+                                        <Icon name='trash'/>
+                                        <Text>Usuń</Text>
+                                    </Button>
+                                    :
+                                    <Button primary={true} full={true} style={{backgroundColor:'#999999'}} onPress={()=>Actions.pop()}>
+                                        <Icon name='arrow-back'/>
+                                        <Text>Powrót</Text>
+                                    </Button>
+                            }
+
+                        </View>
+                        <View flex={1}>
+                            <Button success={true} full={true} onPress={() => {
+                                console.log(this.state);
+                            }}>
+                                <Icon name={this.props.editMode?'checkmark':'add'}/>
+                                <Text>{this.props.editMode?"Zapisz":"Dodaj"}</Text>
+                            </Button>
+                        </View>
+                    </View>
+                </View>
             </Container>
         );
     }
@@ -364,7 +396,11 @@ const styles = StyleSheet.create({
         borderRadius:5
     },
 
-
+    B_container: {
+        position: "absolute",
+        bottom: 0,
+        width: "100%",
+    },
 
 
 });
