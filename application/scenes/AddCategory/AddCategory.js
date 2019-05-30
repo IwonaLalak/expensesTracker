@@ -333,7 +333,7 @@ const styles = StyleSheet.create({
 
     P_optionText: {
         marginLeft: 15,
-        marginTop: 3
+        marginTop: 5
     },
 
     sliderRow: {

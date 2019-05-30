@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     L_descr: {
         fontSize: 14,
         alignSelf: 'flex-start',
-        marginTop: 11
+        marginTop: 8
     },
 
     L_edit_container: {},

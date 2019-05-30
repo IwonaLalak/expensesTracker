@@ -295,7 +295,7 @@ const styles = StyleSheet.create({
 
     P_selectedItemText:{
         marginLeft: 15,
-        marginTop: 3
+        marginTop: 5
     },
 
     P_optionContainer: {
@@ -324,7 +324,7 @@ const styles = StyleSheet.create({
 
     P_optionText: {
         marginLeft: 15,
-        marginTop: 3,
+        marginTop: 5,
     },
 
     F_date_container:{
