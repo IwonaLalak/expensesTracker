@@ -19,6 +19,7 @@ export default class AddScene extends React.Component {
             amount: 0,
             category:null,
             date:new Date(),
+            note:"",
 
         };
         moment.locale('pl',{
@@ -28,7 +29,14 @@ export default class AddScene extends React.Component {
 
     componentDidMount(){
         if(this.props.editMode){
-
+            console.log(this.props)
+            this.setState({
+                type: this.props.post.type,
+                amount: this.props.post.amount,
+                date: new Date(this.props.post.date),
+                note: this.props.post.note,
+                category:local_categories.categories.find(c=>c.id === this.props.post.category_id)
+            })
         }
         else{
             setTimeout(function () {
@@ -63,7 +71,15 @@ export default class AddScene extends React.Component {
         const {selectedItem, defaultText, getLabel, clear} = settings
         return (
             <View style={styles.P_container}>
-                <View>
+                <View style={{
+                    borderColor: '#fff',
+                    borderStyle: "solid",
+                    borderWidth: 1,
+                    borderRadius:5,
+                    backgroundColor:"#fff",
+                    paddingTop:3,
+                    paddingBottom:3,
+                }}>
                     {!selectedItem && <Text style={[styles.P_text, {color: 'grey'}]}>{defaultText}</Text>}
                     {selectedItem && (
                         <View style={styles.P_innerContainer}>
@@ -148,11 +164,6 @@ export default class AddScene extends React.Component {
                                 </View>
                             </View>
                             <View style={styles.F_categories_container}>
-                                <View flex={1} style={{
-                                    borderBottomWidth: 1,
-                                    borderColor: "#ddd",
-                                    paddingBottom:5
-                                }}>
                                     <CustomPicker
                                         placeholder={'Kliknij aby wybrać ikonę'}
                                         value={this.state.category}
@@ -165,14 +176,13 @@ export default class AddScene extends React.Component {
                                             this.setState({icon: value})
                                         }}
                                     />
-                                </View>
                             </View>
                             <View style={styles.F_date_container}>
                                 <Text style={styles.F_date_label}>
                                     Data wpisu:
                                 </Text>
                                 <DatePicker
-                                    defaultDate={new Date()}
+                                    defaultDate={this.props.editMode? new Date(this.props.post.date):new Date()}
                                     locale={"pl"}
                                     timeZoneOffsetInMinutes={undefined}
                                     modalTransparent={false}
@@ -188,7 +198,9 @@ export default class AddScene extends React.Component {
                                 <Text style={styles.F_note_label}>
                                     Notatka:
                                 </Text>
-                                <Textarea rowSpan={3} bordered style={styles.F_note_textarea}/>
+                                <Textarea rowSpan={3} bordered style={styles.F_note_textarea} defaultValue={
+                                    this.props.editMode? this.props.post.note : ''
+                                }/>
                             </View>
                         </Form>
                     </Content>
@@ -248,21 +260,26 @@ const styles = StyleSheet.create({
     F_currency_container: {
         flex: 1,
         flexDirection: 'row',
-        padding: 15
+        padding: 15,
+        marginTop:5
     },
 
     F_amount_container: {
         flex: 1,
+        borderBottomWidth:1,
+        borderColor:"#ddd",
     },
 
     F_amount_input: {
         flex: 1,
-        borderBottomWidth: 1,
-        borderColor: "#ddd",
+        borderWidth: 1,
+        borderColor: "#fff",
+        borderRadius:5,
         padding: 3,
         fontWeight: "bold",
         textAlign: "right",
         fontSize: 26,
+        backgroundColor:"white"
     },
 
     F_type_container: {
@@ -302,11 +319,17 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
 
+    P_container: {
+        borderColor: '#ddd',
+        borderStyle: "solid",
+        borderBottomWidth: 1,
+    },
+
     P_innerContainer: {
         flexDirection: 'row',
         justifyContent: "flex-start",
         paddingLeft: 5,
-        paddingRight: 15
+        paddingRight: 15,
     },
 
     P_selectedItem: {
@@ -364,9 +387,10 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         marginLeft:15,
         marginRight:15,
+        paddingBottom:5,
+        marginTop:5,
         borderBottomWidth: 1,
         borderColor: "#ddd",
-        paddingBottom:5,
     },
 
     F_date_label:{
@@ -384,7 +408,10 @@ const styles = StyleSheet.create({
     },
 
     F_note_container:{
-        padding:15
+        margin:15,
+        borderBottomWidth:1,
+        borderColor:"#ddd",
+
     },
     F_note_label:{
         color:"gray",

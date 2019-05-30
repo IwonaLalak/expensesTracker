@@ -56,8 +56,16 @@ export default class AddCategory extends React.Component {
         const {selectedItem, defaultText, getLabel, clear} = settings
         return (
             <View style={styles.P_container}>
-                <View>
-                    {!selectedItem && <Text style={[styles.P_text, {color: 'grey'}]}>{defaultText}</Text>}
+                <View style={{
+                    borderColor: '#fff',
+                    borderStyle: "solid",
+                    borderWidth: 1,
+                    borderRadius:5,
+                    backgroundColor:"#fff",
+                    paddingTop:3,
+                    paddingBottom:3,
+                }}>
+                    {!selectedItem && <Text style={[styles.P_text, {color: '#aaa', padding:5}]}>{defaultText}</Text>}
                     {selectedItem && (
                         <View style={styles.P_innerContainer}>
                             <Icon name={selectedItem.name} type={selectedItem.groupName}
@@ -79,7 +87,7 @@ export default class AddCategory extends React.Component {
                 <View style={styles.H_container}>
                     <Text style={styles.H_container_text}>
                         {
-                            (this.props.editMode)?
+                            (this.props.editMode) ?
                                 'EDYTUJ KATEGORIĘ'
                                 :
                                 'DODAJ NOWĄ KATEGORIĘ'
@@ -88,23 +96,39 @@ export default class AddCategory extends React.Component {
                     </Text>
                 </View>
                 <ScrollView>
-                    <Content style={{marginBottom:50}}>
+                    <Content style={{marginBottom: 50}}>
                         <Form>
                             <View style={styles.F_container}>
                                 <View style={styles.F_container_name}>
-                                    <Item floatingLabel>
+                                    <Item stackedLabel>
                                         <Label
                                             style={styles.F_text_name}>{(this.state.name.length > 0) ? "Nazwa kategorii" : "Podaj nazwę kategorii"}</Label>
                                         <Input onChangeText={(text) => this.setState({name: text})}
                                                value={this.state.name}
                                                style={{
-                                                   paddingLeft: 5
+                                                   paddingLeft: 5,
+                                                   backgroundColor: "white",
+                                                   paddingTop: 5,
+                                                   paddingBottom: 5,
+                                                   height: 40,
+                                                   borderColor:"#ffffff",
+                                                   borderWidth: 1,
+                                                   borderRadius: 5,
+                                                   width:"100%"
                                                }}
                                         />
                                     </Item>
                                 </View>
                                 <View style={styles.F_container_icon}>
                                     <View flex={1}>
+                                        <Text
+                                            style={{
+                                                color:"grey",
+                                                marginTop:15,
+                                                marginLeft:15,
+                                                marginBottom:5
+                                            }}
+                                        >Wybierz ikonę</Text>
                                         <CustomPicker
                                             placeholder={'Kliknij aby wybrać ikonę'}
                                             value={this.state.icon}
@@ -116,6 +140,7 @@ export default class AddCategory extends React.Component {
                                             onValueChange={value => {
                                                 this.setState({icon: value})
                                             }}
+                                            style={{marginTop:0}}
                                         />
                                     </View>
                                 </View>
@@ -152,13 +177,13 @@ export default class AddCategory extends React.Component {
                     <View style={{flex: 1, flexDirection: "row"}}>
                         <View flex={1}>
                             {
-                                (this.props.editMode)?
+                                (this.props.editMode) ?
                                     <Button danger={true} full={true}>
                                         <Icon name='trash'/>
                                         <Text>Usuń</Text>
                                     </Button>
                                     :
-                                    <Button primary={true} full={true} style={{backgroundColor:'#999999'}} onPress={()=>Actions.pop()}>
+                                    <Button primary={true} full={true} style={{backgroundColor: '#999999'}} onPress={() => Actions.pop()}>
                                         <Icon name='arrow-back'/>
                                         <Text>Powrót</Text>
                                     </Button>
@@ -169,8 +194,8 @@ export default class AddCategory extends React.Component {
                             <Button success={true} full={true} onPress={() => {
                                 console.log(this.state);
                             }}>
-                                <Icon name={this.props.editMode?'checkmark':'add'}/>
-                                <Text>{this.props.editMode?"Zapisz":"Dodaj"}</Text>
+                                <Icon name={this.props.editMode ? 'checkmark' : 'add'}/>
+                                <Text>{this.props.editMode ? "Zapisz" : "Dodaj"}</Text>
                             </Button>
                         </View>
                     </View>
@@ -208,18 +233,19 @@ const styles = StyleSheet.create({
 
     F_container_name: {
         flex: 1,
-        paddingRight:15
+        paddingRight: 15,
     },
 
     F_text_name: {
         fontSize: 16,
         color: "grey",
         paddingBottom: 5,
+        marginBottom:5
     },
 
     F_container_icon: {
         flex: 1,
-        paddingRight:15
+        paddingRight: 15
     },
 
     F_container_color: {
@@ -231,11 +257,8 @@ const styles = StyleSheet.create({
         borderColor: '#ddd',
         borderStyle: "solid",
         borderBottomWidth: 1,
-        paddingTop: 5,
-        paddingBottom: 5,
         marginLeft: 15,
-        marginTop: 35,
-        marginBottom: 25
+        marginBottom: 25,
     },
 
     P_innerContainer: {
