@@ -9,6 +9,8 @@ import {CustomPicker} from "react-native-custom-picker";
 import local_categories from "../../localfiles/local_categories";
 import moment from "moment";
 import ButtonBottomPanelComponent from "../../componens/ButtonBottomPanel/ButtonBottomPanelComponent";
+import {showMessage} from "react-native-flash-message";
+import money from "../../utilities/money";
 
 
 export default class AddScene extends React.Component {
@@ -18,34 +20,36 @@ export default class AddScene extends React.Component {
         this.state = {
             type: '-',
             amount: 0,
-            category:null,
-            date:new Date(),
-            note:"",
+            category: null,
+            date: new Date(),
+            note: "",
 
         };
-        moment.locale('pl',{
-            months : 'styczeń_luty_marzec_kwiecień_maj_czerwiec_lipiec_sierpień_wrzesień_październik_listopad_grudzień'.split('_'),
+        moment.locale('pl', {
+            months: 'styczeń_luty_marzec_kwiecień_maj_czerwiec_lipiec_sierpień_wrzesień_październik_listopad_grudzień'.split('_'),
         })
     }
 
-    componentDidMount(){
-        if(this.props.editMode){
-            console.log(this.props)
-            this.setState({
-                type: this.props.post.type,
-                amount: this.props.post.amount,
-                date: new Date(this.props.post.date),
-                note: this.props.post.note,
-                category:local_categories.categories.find(c=>c.id === this.props.post.category_id)
-            })
-        }
-        else{
-            setTimeout(function () {
-                this.refs['_amountRef'].getElement().focus();
-            }.bind(this),200)
+    componentDidMount() {
+        if (this.props.editMode) {
+
+            let amount = money.format(this.props.post.amount)
 
             this.setState({
-                category:{id:"-1",name:'Nieznane', icon:'question-circle', iconGroup:'FontAwesome', color:'#858285'}
+                type: this.props.post.type,
+                amount: amount,
+                date: new Date(this.props.post.date),
+                note: this.props.post.note,
+                category: local_categories.categories.find(c => c.id === this.props.post.category_id)
+            })
+        }
+        else {
+            setTimeout(function () {
+                this.refs['_amountRef'].getElement().focus();
+            }.bind(this), 50)
+
+            this.setState({
+                category: {id: "-1", name: 'Nieznane', icon: 'question-circle', iconGroup: 'FontAwesome', color: '#858285'}
             })
         }
     }
@@ -62,7 +66,7 @@ export default class AddScene extends React.Component {
         const {item, getLabel} = settings
         return (
             <View style={styles.P_optionContainer}>
-                <Icon name={item.icon} type={item.iconGroup} style={[styles.P_optionIcon, {color:item.color, borderColor:item.color}]}/>
+                <Icon name={item.icon} type={item.iconGroup} style={[styles.P_optionIcon, {color: item.color, borderColor: item.color}]}/>
                 <Text style={styles.P_optionText}>{item.name}</Text>
             </View>
         )
@@ -76,10 +80,10 @@ export default class AddScene extends React.Component {
                     borderColor: '#fff',
                     borderStyle: "solid",
                     borderWidth: 1,
-                    borderRadius:5,
-                    backgroundColor:"#fff",
-                    paddingTop:3,
-                    paddingBottom:3,
+                    borderRadius: 5,
+                    backgroundColor: "#fff",
+                    paddingTop: 3,
+                    paddingBottom: 3,
                 }}>
                     {!selectedItem && <Text style={[styles.P_text, {color: 'grey'}]}>{defaultText}</Text>}
                     {selectedItem && (
@@ -94,18 +98,65 @@ export default class AddScene extends React.Component {
         )
     }
 
-    setDate(newDate) {
-        this.setState({ date: newDate });
-    }
-
-
-    onPressDelete(){
+    onPressDelete() {
         console.log('delete post')
         console.log(this.state.category)
     }
 
-    onPressSave(){
+    onPressSave() {
         console.log(this.state)
+
+        let proper = true;
+
+        let amount = Number((((this.state.amount).toString().substring(0, this.state.amount.length - 3)).split('.').join('')).replace(',', '.'))
+
+        let data = this.state.date.toJSON().substring(0, 10)
+
+        if (amount <= 0) {
+            proper = false
+
+            showMessage({
+                message: "Uzupełnij kwotę",
+                type: "warning",
+                position: "center",
+                icon: 'warning'
+            });
+        }
+
+        if (this.state.type !== "-" && this.state.type !== "+") {
+            proper = false
+
+            showMessage({
+                message: "Wybierz typ wpisu",
+                type: "warning",
+                position: "center",
+                icon: 'warning'
+            });
+        }
+
+        if (!Boolean(this.state.category)) {
+            proper = false
+
+            showMessage({
+                message: "Wybierz kategorię wpisu",
+                type: "warning",
+                position: "center",
+                icon: 'warning'
+            });
+        }
+
+
+        if (proper) {
+            let obj = {
+                date: data,
+                category_id: this.state.category.id,
+                note: this.state.note,
+                amount: amount,
+                type: this.state.type
+            }
+
+            console.log(obj)
+        }
 
     }
 
@@ -124,7 +175,7 @@ export default class AddScene extends React.Component {
                     </Text>
                 </View>
                 <ScrollView>
-                    <Content style={{marginBottom:50}}>
+                    <Content style={{marginBottom: 50}}>
                         <Form>
                             <View style={styles.F_currency_container}>
                                 <View style={styles.F_amount_container}>
@@ -153,12 +204,12 @@ export default class AddScene extends React.Component {
                                     }}
                                                       style={[styles.F_type_container_spend,
                                                           {
-                                                           backgroundColor: (this.state.type === "-")?
-                                                           application_colors.red_lighter
-                                                               :
-                                                               "#ccc"
+                                                              backgroundColor: (this.state.type === "-") ?
+                                                                  application_colors.red_lighter
+                                                                  :
+                                                                  "#ccc"
                                                           }
-                                    ]}>
+                                                      ]}>
                                         <Text style={styles.F_type_text}>WYDATEK</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity onPress={() => {
@@ -166,7 +217,7 @@ export default class AddScene extends React.Component {
                                     }}
                                                       style={[styles.F_type_container_income,
                                                           {
-                                                              backgroundColor: (this.state.type === "+")?
+                                                              backgroundColor: (this.state.type === "+") ?
                                                                   application_colors.green_lighter
                                                                   :
                                                                   "#ccc"
@@ -177,51 +228,55 @@ export default class AddScene extends React.Component {
                                 </View>
                             </View>
                             <View style={styles.F_categories_container}>
-                                    <CustomPicker
-                                        placeholder={'Kliknij aby wybrać ikonę'}
-                                        value={this.state.category}
-                                        options={local_categories.categories}
-                                        getLabel={item => item.name}
-                                        fieldTemplate={this.renderField}
-                                        optionTemplate={this.renderOption}
-                                        headerTemplate={this.renderHeader}
-                                        onValueChange={value => {
-                                            this.setState({icon: value})
-                                        }}
-                                    />
+                                <CustomPicker
+                                    placeholder={'Kliknij aby wybrać ikonę'}
+                                    value={this.state.category}
+                                    options={local_categories.categories}
+                                    getLabel={item => item.name}
+                                    fieldTemplate={this.renderField}
+                                    optionTemplate={this.renderOption}
+                                    headerTemplate={this.renderHeader}
+                                    onValueChange={value => {
+                                        this.setState({icon: value})
+                                    }}
+                                />
                             </View>
                             <View style={styles.F_date_container}>
                                 <Text style={styles.F_date_label}>
                                     Data wpisu:
                                 </Text>
                                 <DatePicker
-                                    defaultDate={this.props.editMode? new Date(this.props.post.date):new Date()}
+                                    defaultDate={this.props.editMode ? new Date(this.props.post.date) : new Date()}
                                     locale={"pl"}
                                     timeZoneOffsetInMinutes={undefined}
                                     modalTransparent={false}
                                     animationType={"fade"}
                                     androidMode={"default"}
                                     textStyle={styles.F_date_date}
-                                    onDateChange={this.setDate}
+                                    onDateChange={(date) => this.setState({date: date})}
                                     disabled={false}
-                                    formatChosenDate={date => {return moment(date).format('DD MMMM YYYY');}}
+                                    formatChosenDate={date => {
+                                        return moment(date).format('DD MMMM YYYY');
+                                    }}
                                 />
                             </View>
                             <View style={styles.F_note_container}>
                                 <Text style={styles.F_note_label}>
                                     Notatka:
                                 </Text>
-                                <Textarea rowSpan={3} bordered style={styles.F_note_textarea} defaultValue={
-                                    this.props.editMode? this.props.post.note : ''
-                                }/>
+                                <Textarea rowSpan={3} bordered style={styles.F_note_textarea}
+                                          maxLength={50}
+                                          defaultValue={
+                                              this.props.editMode ? this.props.post.note : ''
+                                          }/>
                             </View>
                         </Form>
                     </Content>
                 </ScrollView>
                 <ButtonBottomPanelComponent
-                    onPressSave={()=>this.onPressSave()}
-                    onPressDelete={()=>this.onPressDelete()}
-                    onPressBack={()=>Actions.pop()}
+                    onPressSave={() => this.onPressSave()}
+                    onPressDelete={() => this.onPressDelete()}
+                    onPressBack={() => Actions.pop()}
                     editMode={this.props.editMode}
 
                 />
@@ -255,25 +310,25 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         padding: 15,
-        marginTop:5
+        marginTop: 5
     },
 
     F_amount_container: {
         flex: 1,
-        borderBottomWidth:1,
-        borderColor:"#ddd",
+        borderBottomWidth: 1,
+        borderColor: "#ddd",
     },
 
     F_amount_input: {
         flex: 1,
         borderWidth: 1,
         borderColor: "#fff",
-        borderRadius:5,
+        borderRadius: 5,
         padding: 3,
         fontWeight: "bold",
         textAlign: "right",
         fontSize: 26,
-        backgroundColor:"white"
+        backgroundColor: "white"
     },
 
     F_type_container: {
@@ -299,12 +354,12 @@ const styles = StyleSheet.create({
     F_type_text: {
         color: "#ffffff",
         paddingLeft: 3,
-        textAlign:'center',
-        fontSize:10,
-        marginTop:15
+        textAlign: 'center',
+        fontSize: 10,
+        marginTop: 15
     },
 
-    F_categories_container:{
+    F_categories_container: {
         padding: 15,
     },
 
@@ -342,7 +397,7 @@ const styles = StyleSheet.create({
         width: 30,
     },
 
-    P_selectedItemText:{
+    P_selectedItemText: {
         marginLeft: 15,
         marginTop: 5
     },
@@ -376,45 +431,45 @@ const styles = StyleSheet.create({
         marginTop: 5,
     },
 
-    F_date_container:{
-        flex:1,
-        flexDirection:'row',
-        marginLeft:15,
-        marginRight:15,
-        paddingBottom:5,
-        marginTop:5,
+    F_date_container: {
+        flex: 1,
+        flexDirection: 'row',
+        marginLeft: 15,
+        marginRight: 15,
+        paddingBottom: 5,
+        marginTop: 5,
         borderBottomWidth: 1,
         borderColor: "#ddd",
     },
 
-    F_date_label:{
-        color:"gray",
-        marginRight:15,
-        marginTop:5
+    F_date_label: {
+        color: "gray",
+        marginRight: 15,
+        marginTop: 5
     },
-    F_date_date:{
-        padding:5,
-        backgroundColor:"#ffffff",
-        borderWidth:1,
-        borderColor:"#ffffff",
-        borderRadius:5
+    F_date_date: {
+        padding: 5,
+        backgroundColor: "#ffffff",
+        borderWidth: 1,
+        borderColor: "#ffffff",
+        borderRadius: 5
 
     },
 
-    F_note_container:{
-        margin:15,
-        borderBottomWidth:1,
-        borderColor:"#ddd",
+    F_note_container: {
+        margin: 15,
+        borderBottomWidth: 1,
+        borderColor: "#ddd",
 
     },
-    F_note_label:{
-        color:"gray",
+    F_note_label: {
+        color: "gray",
     },
-    F_note_textarea:{
-        backgroundColor:"#ffffff",
-        borderWidth:1,
-        borderColor:"#ffffff",
-        borderRadius:5
+    F_note_textarea: {
+        backgroundColor: "#ffffff",
+        borderWidth: 1,
+        borderColor: "#ffffff",
+        borderRadius: 5
     },
 
 });

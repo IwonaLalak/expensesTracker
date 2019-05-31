@@ -20,6 +20,7 @@ export default{
         {id:17, date:'2019-05-04', hour:'15:17', category_id:6, note:'', amount:1.50, type:'-'},
         {id:18, date:'2019-05-04', hour:'19:06', category_id:8, note:'kabel usb-c', amount:24.00, type:'-'},
         {id:19, date:'2019-05-04', hour:'23:19', category_id:13, note:'Naprawa szyby', amount:420.00, type:'-'},
+        {id:20, date:'2019-05-05', hour:'23:19', category_id:12, note:'Podarunek', amount:1.00, type:'-'},
 
     ]
 }
