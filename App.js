@@ -9,6 +9,7 @@
 import React, {Component} from 'react';
 import RouterComponent from "./application/componens/Router/RouterComponent";
 import styled from 'styled-components';
+import FlashMessage from "react-native-flash-message";
 
 
 type Props = {};
@@ -24,6 +25,7 @@ export default class App extends Component<Props> {
         return (
             <Container>
                 <RouterComponent />
+                <FlashMessage position="center" />
             </Container>
         );
     }

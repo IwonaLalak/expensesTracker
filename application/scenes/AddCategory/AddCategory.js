@@ -9,6 +9,7 @@ import local_icons from "../../localfiles/local_icons";
 import {HueSlider, SaturationSlider, LightnessSlider} from 'react-native-color';
 import tinycolor from 'tinycolor2';
 import ButtonBottomPanelComponent from "../../componens/ButtonBottomPanel/ButtonBottomPanelComponent";
+import {showMessage, hideMessage} from "react-native-flash-message";
 
 export default class AddCategory extends React.Component {
 
@@ -61,12 +62,12 @@ export default class AddCategory extends React.Component {
                     borderColor: '#fff',
                     borderStyle: "solid",
                     borderWidth: 1,
-                    borderRadius:5,
-                    backgroundColor:"#fff",
-                    paddingTop:3,
-                    paddingBottom:3,
+                    borderRadius: 5,
+                    backgroundColor: "#fff",
+                    paddingTop: 3,
+                    paddingBottom: 3,
                 }}>
-                    {!selectedItem && <Text style={[styles.P_text, {color: '#aaa', padding:5}]}>{defaultText}</Text>}
+                    {!selectedItem && <Text style={[styles.P_text, {color: '#aaa', padding: 5}]}>{defaultText}</Text>}
                     {selectedItem && (
                         <View style={styles.P_innerContainer}>
                             <Icon name={selectedItem.name} type={selectedItem.groupName}
@@ -82,14 +83,60 @@ export default class AddCategory extends React.Component {
         )
     }
 
-    onPressDelete(){
+    onPressDelete() {
         console.log('delete category')
         console.log(this.state.icon)
     }
 
-    onPressSave(){
-        console.log(this.state)
+    onPressSave() {
+        let proper = true;
 
+        if (this.state.name.length === 0) {
+            proper = false
+
+            showMessage({
+                message: "Uzupełnij nazwę kategorii",
+                type: "warning",
+                position: "center",
+                icon: 'warning'
+            });
+        }
+
+        if (!Boolean(this.state.icon)) {
+            proper = false
+
+            showMessage({
+                message: "Wybierz ikonę",
+                type: "warning",
+                position: "center",
+                icon: 'warning'
+            });
+        }
+
+        if (tinycolor(this.state.color).getBrightness() > 245) {
+            proper = false
+
+            showMessage({
+                message: "Wybrałeś zbyt jasny kolor",
+                type: "warning",
+                position: "center",
+                icon: 'warning'
+            });
+        }
+
+
+        if(proper){
+
+            let obj = {
+                name: this.state.name,
+                icon: this.state.icon.name,
+                iconGroup: this.state.icon.groupName,
+                color: tinycolor(this.state.color).toHexString()
+            };
+
+            console.log(obj)
+
+        }
     }
 
     render() {
@@ -116,16 +163,17 @@ export default class AddCategory extends React.Component {
                                             style={styles.F_text_name}>{(this.state.name.length > 0) ? "Nazwa kategorii" : "Podaj nazwę kategorii"}</Label>
                                         <Input onChangeText={(text) => this.setState({name: text})}
                                                value={this.state.name}
+                                               maxLength={40}
                                                style={{
                                                    paddingLeft: 5,
                                                    backgroundColor: "white",
                                                    paddingTop: 5,
                                                    paddingBottom: 5,
                                                    height: 40,
-                                                   borderColor:"#ffffff",
+                                                   borderColor: "#ffffff",
                                                    borderWidth: 1,
                                                    borderRadius: 5,
-                                                   width:"100%"
+                                                   width: "100%"
                                                }}
                                         />
                                     </Item>
@@ -134,10 +182,10 @@ export default class AddCategory extends React.Component {
                                     <View flex={1}>
                                         <Text
                                             style={{
-                                                color:"grey",
-                                                marginTop:15,
-                                                marginLeft:15,
-                                                marginBottom:5
+                                                color: "grey",
+                                                marginTop: 15,
+                                                marginLeft: 15,
+                                                marginBottom: 5
                                             }}
                                         >Wybierz ikonę</Text>
                                         <CustomPicker
@@ -151,7 +199,7 @@ export default class AddCategory extends React.Component {
                                             onValueChange={value => {
                                                 this.setState({icon: value})
                                             }}
-                                            style={{marginTop:0}}
+                                            style={{marginTop: 0}}
                                         />
                                     </View>
                                 </View>
@@ -185,9 +233,9 @@ export default class AddCategory extends React.Component {
                     </Content>
                 </ScrollView>
                 <ButtonBottomPanelComponent
-                    onPressSave={()=>this.onPressSave()}
-                    onPressDelete={()=>this.onPressDelete()}
-                    onPressBack={()=>Actions.pop()}
+                    onPressSave={() => this.onPressSave()}
+                    onPressDelete={() => this.onPressDelete()}
+                    onPressBack={() => Actions.pop()}
                     editMode={this.props.editMode}
 
                 />
@@ -231,7 +279,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: "grey",
         paddingBottom: 5,
-        marginBottom:5
+        marginBottom: 5
     },
 
     F_container_icon: {
