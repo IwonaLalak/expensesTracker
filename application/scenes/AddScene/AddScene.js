@@ -8,6 +8,7 @@ import {TextInputMask} from "react-native-masked-text";
 import {CustomPicker} from "react-native-custom-picker";
 import local_categories from "../../localfiles/local_categories";
 import moment from "moment";
+import ButtonBottomPanelComponent from "../../componens/ButtonBottomPanel/ButtonBottomPanelComponent";
 
 
 export default class AddScene extends React.Component {
@@ -96,6 +97,18 @@ export default class AddScene extends React.Component {
     setDate(newDate) {
         this.setState({ date: newDate });
     }
+
+
+    onPressDelete(){
+        console.log('delete post')
+        console.log(this.state.category)
+    }
+
+    onPressSave(){
+        console.log(this.state)
+
+    }
+
 
     render() {
         return (
@@ -205,33 +218,13 @@ export default class AddScene extends React.Component {
                         </Form>
                     </Content>
                 </ScrollView>
-                <View style={styles.B_container}>
-                    <View style={{flex: 1, flexDirection: "row"}}>
-                        <View flex={1}>
-                            {
-                                (this.props.editMode)?
-                                    <Button danger={true} full={true}>
-                                        <Icon name='trash'/>
-                                        <Text>Usuń</Text>
-                                    </Button>
-                                    :
-                                    <Button primary={true} full={true} style={{backgroundColor:'#999999'}} onPress={()=>Actions.pop()}>
-                                        <Icon name='arrow-back'/>
-                                        <Text>Powrót</Text>
-                                    </Button>
-                            }
+                <ButtonBottomPanelComponent
+                    onPressSave={()=>this.onPressSave()}
+                    onPressDelete={()=>this.onPressDelete()}
+                    onPressBack={()=>Actions.pop()}
+                    editMode={this.props.editMode}
 
-                        </View>
-                        <View flex={1}>
-                            <Button success={true} full={true} onPress={() => {
-                                console.log(this.state);
-                            }}>
-                                <Icon name={this.props.editMode?'checkmark':'add'}/>
-                                <Text>{this.props.editMode?"Zapisz":"Dodaj"}</Text>
-                            </Button>
-                        </View>
-                    </View>
-                </View>
+                />
             </Container>
         );
     }
@@ -423,12 +416,5 @@ const styles = StyleSheet.create({
         borderColor:"#ffffff",
         borderRadius:5
     },
-
-    B_container: {
-        position: "absolute",
-        bottom: 0,
-        width: "100%",
-    },
-
 
 });

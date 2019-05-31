@@ -8,6 +8,7 @@ import {CustomPicker} from "react-native-custom-picker";
 import local_icons from "../../localfiles/local_icons";
 import {HueSlider, SaturationSlider, LightnessSlider} from 'react-native-color';
 import tinycolor from 'tinycolor2';
+import ButtonBottomPanelComponent from "../../componens/ButtonBottomPanel/ButtonBottomPanelComponent";
 
 export default class AddCategory extends React.Component {
 
@@ -79,6 +80,16 @@ export default class AddCategory extends React.Component {
                 </View>
             </View>
         )
+    }
+
+    onPressDelete(){
+        console.log('delete category')
+        console.log(this.state.icon)
+    }
+
+    onPressSave(){
+        console.log(this.state)
+
     }
 
     render() {
@@ -173,33 +184,13 @@ export default class AddCategory extends React.Component {
                         </Form>
                     </Content>
                 </ScrollView>
-                <View style={styles.B_container}>
-                    <View style={{flex: 1, flexDirection: "row"}}>
-                        <View flex={1}>
-                            {
-                                (this.props.editMode) ?
-                                    <Button danger={true} full={true}>
-                                        <Icon name='trash'/>
-                                        <Text>Usuń</Text>
-                                    </Button>
-                                    :
-                                    <Button primary={true} full={true} style={{backgroundColor: '#999999'}} onPress={() => Actions.pop()}>
-                                        <Icon name='arrow-back'/>
-                                        <Text>Powrót</Text>
-                                    </Button>
-                            }
+                <ButtonBottomPanelComponent
+                    onPressSave={()=>this.onPressSave()}
+                    onPressDelete={()=>this.onPressDelete()}
+                    onPressBack={()=>Actions.pop()}
+                    editMode={this.props.editMode}
 
-                        </View>
-                        <View flex={1}>
-                            <Button success={true} full={true} onPress={() => {
-                                console.log(this.state);
-                            }}>
-                                <Icon name={this.props.editMode ? 'checkmark' : 'add'}/>
-                                <Text>{this.props.editMode ? "Zapisz" : "Dodaj"}</Text>
-                            </Button>
-                        </View>
-                    </View>
-                </View>
+                />
             </Container>
         );
     }
@@ -346,12 +337,6 @@ const styles = StyleSheet.create({
         marginLeft: 12,
         marginTop: 12,
         flex: 1
-    },
-
-    B_container: {
-        position: "absolute",
-        bottom: 0,
-        width: "100%",
     },
 
 });
