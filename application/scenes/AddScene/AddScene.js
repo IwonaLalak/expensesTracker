@@ -243,6 +243,7 @@ const Container = styled.View`
     flex: 1;
     flexDirection: column;
     justifyContent: space-between;
+    backgroundColor:whitesmoke;
     `;
 
 const styles = StyleSheet.create({
