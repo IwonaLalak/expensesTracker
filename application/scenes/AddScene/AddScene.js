@@ -33,13 +33,13 @@ export default class AddScene extends React.Component {
     componentDidMount() {
         if (this.props.editMode) {
 
-            let amount = money.format(this.props.post.amount)
+            let amount = money.format(this.props.post.p_amount)
 
             this.setState({
-                type: this.props.post.type,
+                type: this.props.post.p_type,
                 amount: amount,
-                date: new Date(this.props.post.date),
-                note: this.props.post.note,
+                date: new Date(this.props.post.p_date),
+                note: this.props.post.p_note,
                 category: local_categories.categories.find(c => c.id === this.props.post.category_id)
             })
         }
@@ -148,11 +148,11 @@ export default class AddScene extends React.Component {
 
         if (proper) {
             let obj = {
-                date: data,
+                p_date: data,
                 category_id: this.state.category.id,
-                note: this.state.note,
-                amount: amount,
-                type: this.state.type
+                p_note: this.state.note,
+                p_amount: amount,
+                p_type: this.state.type
             }
 
             console.log(obj)
@@ -246,7 +246,7 @@ export default class AddScene extends React.Component {
                                     Data wpisu:
                                 </Text>
                                 <DatePicker
-                                    defaultDate={this.props.editMode ? new Date(this.props.post.date) : new Date()}
+                                    defaultDate={this.props.editMode ? new Date(this.props.post.p_date) : new Date()}
                                     locale={"pl"}
                                     timeZoneOffsetInMinutes={undefined}
                                     modalTransparent={false}
@@ -267,7 +267,7 @@ export default class AddScene extends React.Component {
                                 <Textarea rowSpan={3} bordered style={styles.F_note_textarea}
                                           maxLength={50}
                                           defaultValue={
-                                              this.props.editMode ? this.props.post.note : ''
+                                              this.props.editMode ? this.props.post.p_note : ''
                                           }/>
                             </View>
                         </Form>

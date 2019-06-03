@@ -19,29 +19,29 @@ export default class PostsList extends React.Component {
                         {
                             this.props.posts.map(post => {
                                 return (
-                                    <ListItem key={post.id}>
+                                    <ListItem key={post.p_id}>
                                         <TouchableOpacity flex={1} style={styles.L_main_container}
                                                           onPress={() => {
                                                               Actions.push("AddScene",{post:post, editMode:true})
                                                           }}>
                                             <View style={styles.L_icon_container}>
-                                                <Icon name={post.category_icon} type={post.category_iconGroup}
+                                                <Icon name={post.c_icon} type={post.c_icongroup}
                                                       style={[styles.L_icon, {
-                                                          color: post.category_color,
-                                                          borderColor: post.category_color
+                                                          color: post.c_color,
+                                                          borderColor: post.c_color
                                                       }]}/>
                                             </View>
                                             <View flex={1} style={styles.L_text_container}>
                                                 <View style={styles.L_date_container}>
                                                     <Text style={styles.L_date}>
-                                                        {post.date}
+                                                        {post.p_date}
                                                     </Text>
                                                 </View>
                                                 <View style={styles.L_descr_container}>
-                                                    <Text style={styles.L_descr}>{post.category_name}</Text>
+                                                    <Text style={styles.L_descr}>{post.c_name}</Text>
                                                     {
-                                                        (Boolean(post.note) && this.props.showNotes)?
-                                                            <Text style={styles.L_note}>{post.note}</Text>
+                                                        (Boolean(post.p_note) && this.props.showNotes)?
+                                                            <Text style={styles.L_note}>{post.p_note}</Text>
                                                             :
                                                             <View></View>
                                                     }
@@ -51,10 +51,10 @@ export default class PostsList extends React.Component {
                                                 <Text style={
                                                     [
                                                         styles.L_price,
-                                                        {color: (post.type === '-') ? application_colors.red_medium : application_colors.green_medium}
+                                                        {color: (post.p_type === '-') ? application_colors.red_medium : application_colors.green_medium}
                                                     ]
                                                 }>
-                                                    {post.type}{money.format(post.amount)}
+                                                    {post.p_type}{money.format(post.p_amount)}
                                                 </Text>
                                             </View>
                                             <View>

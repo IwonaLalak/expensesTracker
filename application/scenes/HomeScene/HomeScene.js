@@ -8,6 +8,8 @@ import local_categories from "../../localfiles/local_categories";
 import application_colors from "../../utilities/application_colors";
 import money from "../../utilities/money";
 import PostsList from "../AllPostsScene/components/PostsList";
+import PostsController from "../../controllers/PostsController";
+import {showMessage} from "react-native-flash-message";
 
 
 export default class HomeScene extends React.Component {
@@ -16,7 +18,7 @@ export default class HomeScene extends React.Component {
         super(props);
         this.state = {
             posts: [],
-            total:0,
+            total: 0,
         };
     }
 
@@ -25,37 +27,24 @@ export default class HomeScene extends React.Component {
     }
 
     getPosts() {
-        let total = 0;
-        let posts = Array.from(local_posts.posts, item => {
-            let category = local_categories.categories.find(c => c.id === item.category_id)
-            if (Boolean(category))
-                if(item.type ==='-'){
-                    total -= parseFloat(item.amount)
-                }
-                else{
-                    total += parseFloat(item.amount)
-                }
+        PostsController.getLastPosts()
+            .then(
+                function (response) {
+                    this.setState({
+                        posts:response.data,
+                    })
+                }.bind(this))
+            .catch(function (err) {
+                console.log(err)
+                this.setState({posts:[],total: 0})
+                showMessage({
+                    message: "Wystąpił błąd - nie można załadować listy postów",
+                    type: "danger",
+                    position: "center",
+                    icon: 'danger'
+                });
 
-                return {
-                    category_name: category.name,
-                    category_icon: category.icon,
-                    category_iconGroup: category.iconGroup,
-                    category_color: category.color,
-                    ...item
-                }
-        })
-
-        posts.sort((a,b)=>{
-            if(a.date > b.date) return -1
-            else return 1
-        })
-
-
-
-        this.setState({
-            posts: posts.slice(0,7),    // reduce to 7
-            total:total
-        })
+            }.bind(this))
     }
 
     render() {
