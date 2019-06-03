@@ -18,21 +18,21 @@ export default class CategoriesList extends React.Component {
                         {
                             this.props.categories.map(category => {
                                 return (
-                                    <ListItem key={category.id}>
+                                    <ListItem key={category.c_id}>
                                         <TouchableOpacity flex={1} style={styles.L_main_container}
                                                           onPress={() => {
                                                               Actions.push("AddCategory", {category: category, editMode: true})
                                                           }}>
                                             <View style={styles.L_icon_container}>
-                                                <Icon name={category.icon} type={category.iconGroup}
+                                                <Icon name={category.c_icon} type={category.c_icongroup}
                                                       style={[styles.L_icon, {
-                                                          color: category.color,
-                                                          borderColor: category.color
+                                                          color: category.c_color,
+                                                          borderColor: category.c_color
                                                       }]}/>
                                             </View>
                                             <View flex={1} style={styles.L_text_container}>
                                                 <View style={styles.L_descr_container}>
-                                                    <Text style={styles.L_descr}>{category.name}</Text>
+                                                    <Text style={styles.L_descr}>{category.c_name}</Text>
                                                 </View>
                                             </View>
                                             <View>

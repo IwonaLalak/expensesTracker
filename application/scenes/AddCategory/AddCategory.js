@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Platform, StyleSheet, TouchableOpacity, View, ScrollView, Dimensions} from 'react-native';
+import {Platform, StyleSheet, TouchableOpacity, View, ScrollView, Dimensions, Alert} from 'react-native';
 import {Header, Content, Button, Text, Icon, Input, Form, Label, Item} from 'native-base';
 import {Actions} from "react-native-router-flux";
 import application_colors from "../../utilities/application_colors";
@@ -10,6 +10,7 @@ import {HueSlider, SaturationSlider, LightnessSlider} from 'react-native-color';
 import tinycolor from 'tinycolor2';
 import ButtonBottomPanelComponent from "../../componens/ButtonBottomPanel/ButtonBottomPanelComponent";
 import {showMessage, hideMessage} from "react-native-flash-message";
+import CategoriesController from "../../controllers/CategoriesController";
 
 export default class AddCategory extends React.Component {
 
@@ -25,9 +26,9 @@ export default class AddCategory extends React.Component {
     componentDidMount() {
         if (this.props.editMode) {
             this.setState({
-                color: tinycolor(this.props.category.color).toHsl(),
-                icon: {name: this.props.category.icon, groupName: this.props.category.iconGroup},
-                name: this.props.category.name
+                color: tinycolor(this.props.category.c_color).toHsl(),
+                icon: {name: this.props.category.c_icon, groupName: this.props.category.c_icongroup},
+                name: this.props.category.c_name
             })
         }
     }
@@ -84,8 +85,48 @@ export default class AddCategory extends React.Component {
     }
 
     onPressDelete() {
-        console.log('delete category')
-        console.log(this.state.icon)
+
+        Alert.alert(
+            "Czy na pewno chcesz usunąć kategorię "+this.props.category.c_name+"?",
+            "Wpisy należące do tej kategorii zostaną przypisane do kategorii Nieznane",
+            [
+                {text:"NIE", style:'cancel'},
+                {text:"TAK", onPress: ()=>this.deleteCategory()}
+            ]
+        )
+
+    }
+
+    deleteCategory(){
+        CategoriesController.deleteCategory(this.props.category.c_id)
+            .then(
+                function (response) {
+                    if(response.ok){
+                        showMessage({
+                            message: "Pomyślnie usunięto kategorię",
+                            type: "success",
+                            position: "center",
+                            icon: 'success'
+                        });
+
+                        setTimeout(function () {
+                            Actions.push("CategoriesScene")
+                        },1000)
+
+                    }
+                }.bind(this))
+            .catch(function (err) {
+                console.log(err)
+
+                showMessage({
+                    message: "Wystąpił błąd - nie można usunąć kategorii",
+                    type: "danger",
+                    position: "center",
+                    icon: 'danger'
+                });
+
+            }.bind(this))
+
     }
 
     onPressSave() {
@@ -128,13 +169,77 @@ export default class AddCategory extends React.Component {
         if(proper){
 
             let obj = {
-                name: this.state.name,
-                icon: this.state.icon.name,
-                iconGroup: this.state.icon.groupName,
-                color: tinycolor(this.state.color).toHexString()
+                c_name: this.state.name,
+                c_icon: this.state.icon.name,
+                c_icongroup: this.state.icon.groupName,
+                c_color: tinycolor(this.state.color).toHexString()
             };
 
             console.log(obj)
+
+            if(this.props.editMode){
+                // edition
+                CategoriesController.updateCategory(Object.assign(obj,{c_id:this.props.category.c_id}))
+                    .then(
+                        function (response) {
+                            if(response.ok){
+                                showMessage({
+                                    message: "Pomyślnie edytowano kategorię",
+                                    type: "success",
+                                    position: "center",
+                                    icon: 'success'
+                                });
+
+                                setTimeout(function () {
+                                    Actions.push("CategoriesScene")
+                                },1000)
+
+                            }
+                        }.bind(this))
+                    .catch(function (err) {
+                        console.log(err)
+
+                        showMessage({
+                            message: "Wystąpił błąd - nie można edytować kategorii",
+                            type: "danger",
+                            position: "center",
+                            icon: 'danger'
+                        });
+
+                    }.bind(this))
+
+            }
+            else{
+                CategoriesController.addCategory(obj)
+                    .then(
+                        function (response) {
+                            if(response.ok){
+                                showMessage({
+                                    message: "Pomyślnie dodano nową kategorię",
+                                    type: "success",
+                                    position: "center",
+                                    icon: 'success'
+                                });
+
+                                setTimeout(function () {
+                                    Actions.push("CategoriesScene")
+                                },1000)
+
+                            }
+                        }.bind(this))
+                    .catch(function (err) {
+                        console.log(err)
+
+                        showMessage({
+                            message: "Wystąpił błąd - nie można dodać nowej kategorii",
+                            type: "danger",
+                            position: "center",
+                            icon: 'danger'
+                        });
+
+                    }.bind(this))
+
+            }
 
         }
     }
