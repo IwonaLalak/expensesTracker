@@ -47,10 +47,10 @@ export default class SidebarComponent extends React.Component {
                                 <Text style={styles.menuLink}>KATEGORIE</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => {
-                                Actions.push("AboutScene");
-                                this.props.closeDrawer("AboutScene")
+                                Actions.push("SettingsScene");
+                                this.props.closeDrawer("SettingsScene")
                             }}>
-                                <Text style={styles.menuLink}>O APLIKACJI</Text>
+                                <Text style={styles.menuLink}>USTAWIENIA</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

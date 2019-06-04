@@ -11,6 +11,7 @@ import application_colors from "../../utilities/application_colors";
 import CategoriesScene from "../../scenes/CategoriesScene/CategoriesScene";
 import AllPostsScene from "../../scenes/AllPostsScene/AllPostsScene";
 import AddCategory from "../../scenes/AddCategory/AddCategory";
+import SettingsScene from "../../scenes/SettingsScene/SettingsScene";
 
 export default class RouterComponent extends React.Component {
     constructor(props) {
@@ -156,10 +157,10 @@ const scenes = Actions.create(
             hideNavBar
         />
         <Scene
-            key="AboutScene"
-            name="AboutScene"
-            component={AboutScene}
-            title="Scena about"
+            key="SettingsScene"
+            name="SettingsScene"
+            component={SettingsScene}
+            title="Scena ustawień"
             hideNavBar
         />
     </Scene>);
