@@ -1,4 +1,5 @@
 import Database from "./Database";
+
 var db = Database.getInstance()
 
 export default {
@@ -115,38 +116,63 @@ export default {
                 })
             } else {
 
-                //todo check if category is used, if yes, change to category uknown id 0
-
-                db.transaction((tx) => {
-                    tx.executeSql(
-                        'DELETE FROM categories WHERE c_id=?',
+                db.transaction((txOuter) => {
+                    txOuter.executeSql(
+                        'UPDATE posts SET category_id=0 WHERE category_id=?',
                         [id],
-                        (tx, result) => {
-                            if (result.rowsAffected > 0) {
-                                resolve({
-                                    msg: 'Category deleted successfully',
-                                    ok: true
-                                })
-                            }
-                            else {
-                                reject({
-                                    msg: 'Category delete failed',
-                                    ok: false
-                                })
-                            }
+                        (txOuter, resultOuter) => {
+
+                            console.log(resultOuter)
+                            db.transaction((tx) => {
+
+
+                                tx.executeSql(
+                                    'DELETE FROM categories WHERE c_id=?',
+                                    [id],
+                                    (tx, result) => {
+                                        console.log(result)
+                                        if (result.rowsAffected > 0) {
+                                            resolve({
+                                                msg: 'Category deleted successfully',
+                                                ok: true
+                                            })
+                                        }
+                                        else {
+                                            reject({
+                                                msg: 'Category delete failed',
+                                                ok: false
+                                            })
+                                        }
+                                    },
+                                    (error) => {
+
+                                        console.log(error)
+
+                                        reject({
+                                            msg: `${error.message}`,
+                                            ok: false
+                                        })
+                                    });
+
+
+                            });
+
                         },
                         (error) => {
+
+
+                            console.log(error)
+
                             reject({
                                 msg: `${error.message}`,
                                 ok: false
                             })
                         });
-                });
+                })
             }
 
         });
     },
-
 
 
 }
