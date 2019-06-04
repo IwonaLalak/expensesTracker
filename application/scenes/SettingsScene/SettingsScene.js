@@ -1,11 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Alert, Platform, StyleSheet, View,} from 'react-native';
-import {Button, Icon, Text} from "native-base";
+import {Alert, StyleSheet, View,} from 'react-native';
+import {Button, Text} from "native-base";
 import application_colors from "../../utilities/application_colors";
 import SettingsController from "../../controllers/SettingsController";
 import {showMessage} from "react-native-flash-message";
-import {Actions} from "react-native-router-flux";
 
 export default class SettingsScene extends React.Component {
 
@@ -29,7 +28,6 @@ export default class SettingsScene extends React.Component {
     deleteAllPosts() {
         SettingsController.deleteAllPosts().then(
             function (response) {
-                console.log(response)
                 if(response.ok){
                     showMessage({
                         message: "Pomyślnie usunięto "+response.data+' wpisów',

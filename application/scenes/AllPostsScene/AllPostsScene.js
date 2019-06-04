@@ -2,11 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import {Platform, StyleSheet, TouchableOpacity, View,} from 'react-native';
 import {Icon, Text} from "native-base";
-import {Actions} from "react-native-router-flux";
 import application_colors from "../../utilities/application_colors";
 import utils from "../../utilities/utils";
-import local_posts from "../../localfiles/local_posts";
-import local_categories from "../../localfiles/local_categories";
 import PostsList from "./components/PostsList";
 import money from "../../utilities/money";
 import PostsController from "../../controllers/PostsController";
@@ -82,7 +79,6 @@ export default class AllPostsScene extends React.Component {
         this.setState({posts: []})
 
         PostsController.getPostFromMonth((year+'-'+month+'-01'),(year+'-'+month+'-31')).then(function (response) {
-            console.log(response)
             if(response.ok){
                 this.setState({posts:response.data})
             }
@@ -100,7 +96,6 @@ export default class AllPostsScene extends React.Component {
 
     getSum(month,year){
         PostsController.getSumFromMonth((year+'-'+month+'-01'),(year+'-'+month+'-31')).then(function (response) {
-            console.log(response)
             if(response.ok){
                 this.setState({monthAmount:response.data})
             }

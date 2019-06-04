@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Platform, StyleSheet, Text, View,} from 'react-native';
-import local_categories from "../../localfiles/local_categories";
+import {View} from 'react-native';
 import CategoriesList from "./components/CategoriesList";
 import {Fab, Icon} from "native-base";
 import application_colors from "../../utilities/application_colors";

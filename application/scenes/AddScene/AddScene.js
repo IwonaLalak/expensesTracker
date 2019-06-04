@@ -1,12 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import {Platform, ScrollView, StyleSheet, View, TouchableOpacity, Alert} from 'react-native';
-import {Header, Content, Button, Text, Form, Icon, DatePicker, Textarea} from 'native-base';
+import {Content, Text, Form, Icon, DatePicker, Textarea} from 'native-base';
 import {Actions} from "react-native-router-flux";
 import application_colors from "../../utilities/application_colors";
 import {TextInputMask} from "react-native-masked-text";
 import {CustomPicker} from "react-native-custom-picker";
-import local_categories from "../../localfiles/local_categories";
 import moment from "moment";
 import ButtonBottomPanelComponent from "../../componens/ButtonBottomPanel/ButtonBottomPanelComponent";
 import {showMessage} from "react-native-flash-message";
@@ -203,8 +202,6 @@ export default class AddScene extends React.Component {
                 icon: 'warning'
             });
         }
-
-        console.log(this.state)
 
         if (proper) {
             let obj = {

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {Platform, StyleSheet, TouchableOpacity, View, ScrollView, Dimensions, Alert} from 'react-native';
-import {Header, Content, Button, Text, Icon, Input, Form, Label, Item} from 'native-base';
+import {Content, Text, Icon, Input, Form, Label, Item} from 'native-base';
 import {Actions} from "react-native-router-flux";
 import application_colors from "../../utilities/application_colors";
 import {CustomPicker} from "react-native-custom-picker";
@@ -174,8 +174,6 @@ export default class AddCategory extends React.Component {
                 c_icongroup: this.state.icon.groupName,
                 c_color: tinycolor(this.state.color).toHexString()
             };
-
-            console.log(obj)
 
             if(this.props.editMode){
                 // edition
