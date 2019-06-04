@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Platform, ScrollView, StyleSheet, View, TouchableOpacity} from 'react-native';
+import {Platform, ScrollView, StyleSheet, View, TouchableOpacity, Alert} from 'react-native';
 import {Header, Content, Button, Text, Form, Icon, DatePicker, Textarea} from 'native-base';
 import {Actions} from "react-native-router-flux";
 import application_colors from "../../utilities/application_colors";
@@ -119,8 +119,45 @@ export default class AddScene extends React.Component {
     }
 
     onPressDelete() {
-        console.log('delete post')
-        console.log(this.state.category)
+        Alert.alert(
+            "Czy na pewno chcesz usunąć wpis z kategorii"+this.props.post.c_name+"?",
+            "Ta akcja nie może zostać cofnięta",
+            [
+                {text:"NIE", style:'cancel'},
+                {text:"TAK", onPress: ()=>this.deletePost()}
+            ]
+        )
+    }
+
+    deletePost(){
+        PostsController.deletePost(this.props.post.p_id)
+            .then(
+                function (response) {
+                    if(response.ok){
+                        showMessage({
+                            message: "Pomyślnie usunięto post",
+                            type: "success",
+                            position: "center",
+                            icon: 'success'
+                        });
+
+                        setTimeout(function () {
+                            Actions.push("AllPostsScene")
+                        },1000)
+
+                    }
+                }.bind(this))
+            .catch(function (err) {
+                console.log(err)
+
+                showMessage({
+                    message: "Wystąpił błąd - nie można usunąć wpisu",
+                    type: "danger",
+                    position: "center",
+                    icon: 'danger'
+                });
+
+            }.bind(this))
     }
 
     onPressSave() {
@@ -176,6 +213,34 @@ export default class AddScene extends React.Component {
 
             if (this.props.editMode) {
                 // edition
+                PostsController.updatePost(Object.assign(obj,{p_id:this.props.post.p_id})).then(
+                    function (response) {
+                        console.log(response)
+                        if (response.ok) {
+                            showMessage({
+                                message: "Pomyślnie edytowano wpis",
+                                type: "success",
+                                position: "center",
+                                icon: 'success'
+                            });
+
+                            setTimeout(function () {
+                                Actions.push("AllPostsScene")
+                            }, 1000)
+
+                        }
+                    }.bind(this))
+                    .catch(function (err) {
+                        console.log(err)
+
+                        showMessage({
+                            message: "Wystąpił błąd - nie można edytować wpisu",
+                            type: "danger",
+                            position: "center",
+                            icon: 'danger'
+                        });
+
+                    }.bind(this))
             }
             else {
                 PostsController.addPost(obj).then(

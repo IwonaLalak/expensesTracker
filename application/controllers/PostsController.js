@@ -66,8 +66,6 @@ export default {
                         [obj.p_date, obj.p_note, obj.p_amount, obj.p_type,obj.category_id],
                         (tx, result) => {
                             if (result.rowsAffected > 0) {
-                                console.log('ok')
-                                console.log(result)
                                 resolve({
                                     msg: 'Post inserted successfully',
                                     ok: true
@@ -75,7 +73,6 @@ export default {
                             }
                             else {
 
-                                console.log('nope1')
                                 reject({
                                     msg: 'Post insert failed',
                                     ok: false
@@ -83,7 +80,6 @@ export default {
                             }
                         },
                         (error) => {
-                            console.log('nope1')
                             console.log(error)
                             reject({
                                 msg: `${error.message}`,
@@ -95,4 +91,83 @@ export default {
 
         });
     },
+
+    updatePost(obj) {
+        return new Promise((resolve, reject) => {
+            if (!obj) {
+                reject({
+                    msg: 'Object cannot be null',
+                    ok: false,
+                })
+            } else {
+                db.transaction((tx) => {
+                    tx.executeSql(
+                        'UPDATE posts SET p_date=?,p_note=?,p_amount=?,p_type=?,category_id=? WHERE p_id=?',
+                        [obj.p_date, obj.p_note, obj.p_amount, obj.p_type,obj.category_id, obj.p_id],
+                        (tx, result) => {
+                            if (result.rowsAffected > 0) {
+                                resolve({
+                                    msg: 'Post updated successfully',
+                                    ok: true
+                                })
+                            }
+                            else {
+                                reject({
+                                    msg: 'Post update failed',
+                                    ok: false
+                                })
+                            }
+                        },
+                        (error) => {
+                            console.log(error)
+                            reject({
+                                msg: `${error.message}`,
+                                ok: false
+                            })
+                        });
+                });
+            }
+
+        });
+    },
+
+    deletePost(id){
+        return new Promise((resolve, reject) => {
+            if (!id) {
+                reject({
+                    msg: 'ID cannot be null',
+                    ok: false,
+                })
+            } else {
+                db.transaction((tx) => {
+                    tx.executeSql(
+                        'DELETE FROM posts WHERE p_id=?',
+                        [id],
+                        (tx, result) => {
+                            if (result.rowsAffected > 0) {
+                                resolve({
+                                    msg: 'Post deleted successfully',
+                                    ok: true
+                                })
+                            }
+                            else {
+                                reject({
+                                    msg: 'Post delete failed',
+                                    ok: false
+                                })
+                            }
+                        },
+                        (error) => {
+                            reject({
+                                msg: `${error.message}`,
+                                ok: false
+                            })
+                        });
+                });
+            }
+
+        });
+
+    }
+
 }
