@@ -9,7 +9,7 @@ export default {
             let data = [];
 
             db.transaction((tx) => {
-                tx.executeSql('SELECT * FROM posts INNER JOIN categories ON posts.category_id = categories.c_id ORDER BY posts.p_date DESC LIMIT 7', [], (tx, results) => {
+                tx.executeSql('SELECT * FROM posts INNER JOIN categories ON posts.category_id = categories.c_id ORDER BY posts.p_date DESC', [], (tx, results) => {
                     for (let i = 0; i < results.rows.length; i++) {
                         data.push(results.rows.item(i))
                     }
@@ -49,6 +49,50 @@ export default {
                     })
                 });
             });
+        });
+    },
+
+    addPost(obj) {
+        return new Promise((resolve, reject) => {
+            if (!obj) {
+                reject({
+                    msg: 'Object cannot be null',
+                    ok: false,
+                })
+            } else {
+                db.transaction((tx) => {
+                    tx.executeSql(
+                        'INSERT INTO posts (p_date,p_note,p_amount,p_type,category_id) VALUES (?,?,?,?,?)',
+                        [obj.p_date, obj.p_note, obj.p_amount, obj.p_type,obj.category_id],
+                        (tx, result) => {
+                            if (result.rowsAffected > 0) {
+                                console.log('ok')
+                                console.log(result)
+                                resolve({
+                                    msg: 'Post inserted successfully',
+                                    ok: true
+                                })
+                            }
+                            else {
+
+                                console.log('nope1')
+                                reject({
+                                    msg: 'Post insert failed',
+                                    ok: false
+                                })
+                            }
+                        },
+                        (error) => {
+                            console.log('nope1')
+                            console.log(error)
+                            reject({
+                                msg: `${error.message}`,
+                                ok: false
+                            })
+                        });
+                });
+            }
+
         });
     },
 }

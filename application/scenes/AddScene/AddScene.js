@@ -11,6 +11,8 @@ import moment from "moment";
 import ButtonBottomPanelComponent from "../../componens/ButtonBottomPanel/ButtonBottomPanelComponent";
 import {showMessage} from "react-native-flash-message";
 import money from "../../utilities/money";
+import PostsController from "../../controllers/PostsController";
+import CategoriesController from "../../controllers/CategoriesController";
 
 
 export default class AddScene extends React.Component {
@@ -23,11 +25,32 @@ export default class AddScene extends React.Component {
             category: null,
             date: new Date(),
             note: "",
+            categories: [],
 
         };
         moment.locale('pl', {
             months: 'styczeń_luty_marzec_kwiecień_maj_czerwiec_lipiec_sierpień_wrzesień_październik_listopad_grudzień'.split('_'),
         })
+    }
+
+    getCategories() {
+        CategoriesController.getAllCategories().then(function (response) {
+            if (response.ok) {
+                this.setState({
+                    categories: response.data,
+                    category: (this.props.editMode) ? response.data.find(c => c.c_id === this.props.post.category_id) : response.data.find(c => c.c_name === 'Nieznane')
+                })
+            }
+        }.bind(this)).catch(function (error) {
+            console.log(error)
+
+            showMessage({
+                message: "Wystąpił błąd - nie można pobrać kategorii",
+                type: "danger",
+                position: "center",
+                icon: 'danger'
+            });
+        }.bind(this))
     }
 
     componentDidMount() {
@@ -40,18 +63,15 @@ export default class AddScene extends React.Component {
                 amount: amount,
                 date: new Date(this.props.post.p_date),
                 note: this.props.post.p_note,
-                category: local_categories.categories.find(c => c.id === this.props.post.category_id)
             })
         }
         else {
             setTimeout(function () {
                 this.refs['_amountRef'].getElement().focus();
             }.bind(this), 50)
-
-            this.setState({
-                category: {id: "-1", name: 'Nieznane', icon: 'question-circle', iconGroup: 'FontAwesome', color: '#858285'}
-            })
         }
+
+        this.getCategories()
     }
 
     renderHeader() {
@@ -66,8 +86,8 @@ export default class AddScene extends React.Component {
         const {item, getLabel} = settings
         return (
             <View style={styles.P_optionContainer}>
-                <Icon name={item.icon} type={item.iconGroup} style={[styles.P_optionIcon, {color: item.color, borderColor: item.color}]}/>
-                <Text style={styles.P_optionText}>{item.name}</Text>
+                <Icon name={item.c_icon} type={item.c_icongroup} style={[styles.P_optionIcon, {color: item.c_color, borderColor: item.c_color}]}/>
+                <Text style={styles.P_optionText}>{item.c_name}</Text>
             </View>
         )
     }
@@ -88,9 +108,9 @@ export default class AddScene extends React.Component {
                     {!selectedItem && <Text style={[styles.P_text, {color: 'grey'}]}>{defaultText}</Text>}
                     {selectedItem && (
                         <View style={styles.P_innerContainer}>
-                            <Icon name={selectedItem.icon} type={selectedItem.iconGroup}
-                                  style={[styles.P_selectedItem, {color: selectedItem.color, borderColor: selectedItem.color}]}/>
-                            <Text style={styles.P_selectedItemText}>{selectedItem.name}</Text>
+                            <Icon name={selectedItem.c_icon} type={selectedItem.c_icongroup}
+                                  style={[styles.P_selectedItem, {color: selectedItem.c_color, borderColor: selectedItem.c_color}]}/>
+                            <Text style={styles.P_selectedItemText}>{selectedItem.c_name}</Text>
                         </View>
                     )}
                 </View>
@@ -104,8 +124,6 @@ export default class AddScene extends React.Component {
     }
 
     onPressSave() {
-        console.log(this.state)
-
         let proper = true;
 
         let amount = Number((((this.state.amount).toString().substring(0, this.state.amount.length - 3)).split('.').join('')).replace(',', '.'))
@@ -145,17 +163,50 @@ export default class AddScene extends React.Component {
             });
         }
 
-
         if (proper) {
             let obj = {
                 p_date: data,
-                category_id: this.state.category.id,
+                category_id: this.state.category.c_id,
                 p_note: this.state.note,
                 p_amount: amount,
                 p_type: this.state.type
             }
 
             console.log(obj)
+
+            if (this.props.editMode) {
+                // edition
+            }
+            else {
+                PostsController.addPost(obj).then(
+                    function (response) {
+                        console.log(response)
+                        if (response.ok) {
+                            showMessage({
+                                message: "Pomyślnie dodano nowy wpis",
+                                type: "success",
+                                position: "center",
+                                icon: 'success'
+                            });
+
+                            setTimeout(function () {
+                                Actions.push("HomeScene")
+                            }, 1000)
+
+                        }
+                    }.bind(this))
+                    .catch(function (err) {
+                        console.log(err)
+
+                        showMessage({
+                            message: "Wystąpił błąd - nie można dodać nowego wpisu",
+                            type: "danger",
+                            position: "center",
+                            icon: 'danger'
+                        });
+
+                    }.bind(this))
+            }
         }
 
     }
@@ -170,7 +221,7 @@ export default class AddScene extends React.Component {
                             (this.props.editMode) ?
                                 'EDYTUJ WPIS'
                                 :
-                                'DODAJ NOWY WPIS'
+                                'DODAJ NOWY WPIS n'
                         }
                     </Text>
                 </View>
@@ -229,15 +280,15 @@ export default class AddScene extends React.Component {
                             </View>
                             <View style={styles.F_categories_container}>
                                 <CustomPicker
-                                    placeholder={'Kliknij aby wybrać ikonę'}
+                                    placeholder={'Kliknij aby wybrać kategorię'}
                                     value={this.state.category}
-                                    options={local_categories.categories}
-                                    getLabel={item => item.name}
+                                    options={this.state.categories}
+                                    getLabel={item => item.c_name}
                                     fieldTemplate={this.renderField}
                                     optionTemplate={this.renderOption}
                                     headerTemplate={this.renderHeader}
-                                    onValueChange={value => {
-                                        this.setState({icon: value})
+                                    onValueChange={item => {
+                                        this.setState({category: item})
                                     }}
                                 />
                             </View>
