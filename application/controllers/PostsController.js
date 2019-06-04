@@ -1,5 +1,5 @@
-var SQLite = require('react-native-sqlite-storage')
-var db = SQLite.openDatabase({name: 'database.db', createFromLocation: '~database.db'})
+import Database from "./Database";
+var db = Database.getInstance()
 
 export default {
 
