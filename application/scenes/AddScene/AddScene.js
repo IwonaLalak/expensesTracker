@@ -204,6 +204,8 @@ export default class AddScene extends React.Component {
             });
         }
 
+        console.log(this.state)
+
         if (proper) {
             let obj = {
                 p_date: data,
@@ -213,13 +215,10 @@ export default class AddScene extends React.Component {
                 p_type: this.state.type
             }
 
-            console.log(obj)
-
             if (this.props.editMode) {
                 // edition
                 PostsController.updatePost(Object.assign(obj,{p_id:this.props.post.p_id})).then(
                     function (response) {
-                        console.log(response)
                         if (response.ok) {
                             showMessage({
                                 message: "Pomyślnie edytowano wpis",
@@ -249,7 +248,6 @@ export default class AddScene extends React.Component {
             else {
                 PostsController.addPost(obj).then(
                     function (response) {
-                        console.log(response)
                         if (response.ok) {
                             showMessage({
                                 message: "Pomyślnie dodano nowy wpis",
@@ -388,7 +386,9 @@ export default class AddScene extends React.Component {
                                           maxLength={50}
                                           defaultValue={
                                               this.props.editMode ? this.props.post.p_note : ''
-                                          }/>
+                                          }
+                                          onChangeText={(text) => {this.setState({note: text}); }}
+                                />
                             </View>
                         </Form>
                     </Content>

@@ -19,9 +19,6 @@ export default class CategoriesScene extends React.Component {
     }
 
     componentDidMount() {
-        /*this.setState({
-            categories: Array.from(local_categories.categories).filter(item => item.name !== "Nieznane")
-        })*/
         this.getCategories();
     }
 

@@ -9,6 +9,8 @@ import local_posts from "../../localfiles/local_posts";
 import local_categories from "../../localfiles/local_categories";
 import PostsList from "./components/PostsList";
 import money from "../../utilities/money";
+import PostsController from "../../controllers/PostsController";
+import {showMessage} from "react-native-flash-message";
 
 export default class AllPostsScene extends React.Component {
 
@@ -75,40 +77,25 @@ export default class AllPostsScene extends React.Component {
 
     getPosts(month, year) {
         this.setState({posts: []})
-        let categories = local_categories.categories
-        let monthpost = local_posts.posts.filter(p => p.date >= (year+'-'+month+'-01') && p.date <= (year+'-'+month+'-31'))
-        let amount = 0;
 
-        let posts = Array.from(monthpost, item => {
-            let category = categories.find(c => c.id === item.category_id)
-            if (Boolean(category))
-                if (item.type === '-') {
-                    amount -= parseFloat(item.amount)
-                }
-                else {
-                    amount += parseFloat(item.amount)
-                }
+        let datesince = (year+'-'+month+'-01');
+        let dateto = (year+'-'+month+'-31')
 
-            return {
-                    date:item.date,
-                category_name: category.name,
-                category_icon: category.icon,
-                category_iconGroup: category.iconGroup,
-                category_color: category.color,
-                ...item
+        PostsController.getPostFromMonth(datesince,dateto).then(function (response) {
+            console.log(response)
+            if(response.ok){
+                this.setState({posts:response.data})
             }
-        })
-
-        posts.sort((a,b)=>{
-            if(a.date > b.date) return -1
-            else return 1
-        })
-
-
-        this.setState({
-            posts: posts,
-            monthAmount: amount
-        })
+        }.bind(this))
+            .catch(function (err) {
+                console.log(err)
+                showMessage({
+                    message: "Wystąpił błąd - nie można pobrać wpisów",
+                    type: "danger",
+                    position: "center",
+                    icon: 'danger'
+                });
+            })
     }
 
     render() {
