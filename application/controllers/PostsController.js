@@ -9,7 +9,7 @@ export default {
             let data = [];
 
             db.transaction((tx) => {
-                tx.executeSql('SELECT * FROM posts INNER JOIN categories ON posts.category_id = categories.c_id ORDER BY posts.p_date DESC', [], (tx, results) => {
+                tx.executeSql('SELECT * FROM posts INNER JOIN categories ON posts.category_id = categories.c_id ORDER BY posts.p_date DESC LIMIT 7', [], (tx, results) => {
                     for (let i = 0; i < results.rows.length; i++) {
                         data.push(results.rows.item(i))
                     }

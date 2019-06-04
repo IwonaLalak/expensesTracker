@@ -221,7 +221,7 @@ export default class AddScene extends React.Component {
                             (this.props.editMode) ?
                                 'EDYTUJ WPIS'
                                 :
-                                'DODAJ NOWY WPIS n'
+                                'DODAJ NOWY WPIS'
                         }
                     </Text>
                 </View>
