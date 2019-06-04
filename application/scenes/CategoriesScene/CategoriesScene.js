@@ -7,13 +7,15 @@ import application_colors from "../../utilities/application_colors";
 import {Actions} from "react-native-router-flux";
 import CategoriesController from "../../controllers/CategoriesController";
 import {showMessage} from "react-native-flash-message";
+import Spinner from "react-native-loading-spinner-overlay";
 
 export default class CategoriesScene extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            categories: []
+            categories: [],
+            spinner: false
         };
     }
 
@@ -22,15 +24,18 @@ export default class CategoriesScene extends React.Component {
     }
 
     getCategories() {
-
+        this.setState({spinner: true})
         CategoriesController.getAllCategories()
             .then(
                 function (response) {
-                    this.setState({categories:Array.from(response.data).filter(item => item.c_name !== "Nieznane")})
+                    this.setState({
+                        categories: Array.from(response.data).filter(item => item.c_name !== "Nieznane"),
+                        spinner: false
+                    })
                 }.bind(this))
             .catch(function (err) {
                 console.log(err)
-                this.setState({categories:[]})
+                this.setState({categories: [], spinner: false})
                 showMessage({
                     message: "Wystąpił błąd - nie można załadować listy kategorii",
                     type: "danger",
@@ -44,6 +49,12 @@ export default class CategoriesScene extends React.Component {
     render() {
         return (
             <Container>
+                <Spinner
+                    visible={this.state.spinner}
+                    textContent={'Trwa ładowanie...'}
+                    textStyle={{color: '#fff'}}
+
+                />
                 <View flex={1}>
                     <CategoriesList categories={this.state.categories}/>
                 </View>

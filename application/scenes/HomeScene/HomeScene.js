@@ -8,6 +8,7 @@ import money from "../../utilities/money";
 import PostsList from "../AllPostsScene/components/PostsList";
 import PostsController from "../../controllers/PostsController";
 import {showMessage} from "react-native-flash-message";
+import Spinner from 'react-native-loading-spinner-overlay';
 
 
 export default class HomeScene extends React.Component {
@@ -17,27 +18,30 @@ export default class HomeScene extends React.Component {
         this.state = {
             posts: [],
             total: 0,
-            noposts:false
+            noposts: false,
+            spinner: false
         };
     }
 
     componentDidMount() {
-        this.getSum();
         this.getPosts();
     }
 
     getPosts() {
+        this.setState({spinner: true})
+
         PostsController.getLastPosts()
             .then(
                 function (response) {
                     this.setState({
-                        posts:response.data,
-                        noposts:response.data.length === 0
+                        posts: response.data,
+                        noposts: response.data.length === 0,
                     })
+                    this.getSum();
                 }.bind(this))
             .catch(function (err) {
                 console.log(err)
-                this.setState({posts:[],total: 0, noposts:true})
+                this.setState({posts: [], total: 0, noposts: true, spinner: false})
                 showMessage({
                     message: "Wystąpił błąd - nie można załadować listy postów",
                     type: "danger",
@@ -47,17 +51,19 @@ export default class HomeScene extends React.Component {
             }.bind(this))
     }
 
-    getSum(){
+    getSum() {
         PostsController.getTotalSum().then(function (response) {
-            if(response.ok){
+            if (response.ok) {
                 this.setState({
-                    total:response.data
+                    total: response.data,
+                    spinner: false
                 })
-            }
+            } else this.setState({spinner: false})
         }.bind(this)).catch(function (error) {
             console.log(error)
             this.setState({
-                total:0,
+                total: 0,
+                spinner: false
             })
             showMessage({
                 message: "Wystąpił błąd - nie można wyświetlić całkowitego salda",
@@ -73,6 +79,12 @@ export default class HomeScene extends React.Component {
 
         return (
             <Container>
+                <Spinner
+                    visible={this.state.spinner}
+                    textContent={'Trwa ładowanie...'}
+                    textStyle={{color: '#fff'}}
+
+                />
                 <View style={styles.T_total_container}>
                     <Text style={styles.T_total_text}>Saldo konta:</Text>
                     <Text style={styles.T_total_amount}>{money.format(this.state.total)}</Text>
@@ -81,15 +93,15 @@ export default class HomeScene extends React.Component {
                     <PostsList posts={this.state.posts} showNotes={false}/>
                     <View style={styles.P_all_posts_container}>
                         {
-                            this.state.posts.length === 0?
-                            <View></View>
-                            :
-                            <TouchableOpacity onPress={() => {
-                            Actions.push("AllPostsScene")
-                        }} style={styles.P_all_posts_touchable}>
-                            <Icon name={"list"} style={styles.P_icon}/>
-                            <Text style={styles.P_text}>{'Zobacz wszystkie wpisy'.toUpperCase()}</Text>
-                            </TouchableOpacity>
+                            this.state.posts.length === 0 ?
+                                <View></View>
+                                :
+                                <TouchableOpacity onPress={() => {
+                                    Actions.push("AllPostsScene")
+                                }} style={styles.P_all_posts_touchable}>
+                                    <Icon name={"list"} style={styles.P_icon}/>
+                                    <Text style={styles.P_text}>{'Zobacz wszystkie wpisy'.toUpperCase()}</Text>
+                                </TouchableOpacity>
                         }
                     </View>
                     <View>
@@ -104,10 +116,10 @@ export default class HomeScene extends React.Component {
                         </Fab>
                     </View>
                     {
-                        (this.state.noposts)?
+                        (this.state.noposts) ?
                             <View style={styles.NP_noposts_container}>
                                 <Text style={styles.NP_noposts_text}>Kliknij na przycisk aby rozpocząć</Text>
-                                <Icon style={styles.NP_noposts_icon} name={'arrow-top-right'} type={'MaterialCommunityIcons'} />
+                                <Icon style={styles.NP_noposts_icon} name={'arrow-top-right'} type={'MaterialCommunityIcons'}/>
                             </View>
                             :
                             <View></View>
@@ -168,24 +180,24 @@ const styles = StyleSheet.create({
         fontSize: 13,
     },
 
-    NP_noposts_container:{
+    NP_noposts_container: {
         flexDirection: "row",
         justifyContent: "center"
     },
 
-    NP_noposts_text:{
+    NP_noposts_text: {
         marginTop: 10,
         color: application_colors.green_lighter,
-        textShadowColor:"#fff",
+        textShadowColor: "#fff",
         textShadowOffset: {width: 2, height: 1},
         textShadowRadius: 5
     },
 
-    NP_noposts_icon:{
-        transform: [{ rotate: '-25deg'}],
+    NP_noposts_icon: {
+        transform: [{rotate: '-25deg'}],
         fontSize: 30,
         color: application_colors.green_lighter,
-        textShadowColor:"#fff",
+        textShadowColor: "#fff",
         textShadowOffset: {width: 2, height: 1},
         textShadowRadius: 5
     }

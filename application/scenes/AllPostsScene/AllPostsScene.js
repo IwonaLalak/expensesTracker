@@ -8,6 +8,7 @@ import PostsList from "./components/PostsList";
 import money from "../../utilities/money";
 import PostsController from "../../controllers/PostsController";
 import {showMessage} from "react-native-flash-message";
+import Spinner from 'react-native-loading-spinner-overlay';
 
 export default class AllPostsScene extends React.Component {
 
@@ -19,12 +20,12 @@ export default class AllPostsScene extends React.Component {
             months: utils.monthsArray,
             posts: [],
             monthAmount: 0,
+            spinner: false
         };
     }
 
     componentDidMount() {
         this.getPosts(new Date().toJSON().substr(5, 2), new Date().toJSON().substr(0, 4))
-        this.getSum(new Date().toJSON().substr(5, 2), new Date().toJSON().substr(0, 4))
     }
 
     decrease() {
@@ -48,7 +49,6 @@ export default class AllPostsScene extends React.Component {
         })
 
         this.getPosts(cm.toString(), cy.toString())
-        this.getSum(cm.toString(), cy.toString())
     }
 
     increase() {
@@ -72,48 +72,61 @@ export default class AllPostsScene extends React.Component {
         })
 
         this.getPosts(cm.toString(), cy.toString())
-        this.getSum(cm.toString(), cy.toString())
     }
 
     getPosts(month, year) {
-        this.setState({posts: []})
+        this.setState({posts: [], spinner: true})
 
-        PostsController.getPostFromMonth((year+'-'+month+'-01'),(year+'-'+month+'-31')).then(function (response) {
-            if(response.ok){
-                this.setState({posts:response.data})
+        PostsController.getPostFromMonth((year + '-' + month + '-01'), (year + '-' + month + '-31')).then(function (response) {
+            if (response.ok) {
+                this.setState({posts: response.data})
+                this.getSum(month, year)
+            } else {
+                this.setState({spinner: false})
             }
         }.bind(this))
             .catch(function (err) {
                 console.log(err)
+                this.setState({spinner: false})
                 showMessage({
                     message: "Wystąpił błąd - nie można pobrać wpisów",
                     type: "danger",
                     position: "center",
                     icon: 'danger'
                 });
-            })
+            }.bind(this))
     }
 
-    getSum(month,year){
-        PostsController.getSumFromMonth((year+'-'+month+'-01'),(year+'-'+month+'-31')).then(function (response) {
-            if(response.ok){
-                this.setState({monthAmount:response.data})
+    getSum(month, year) {
+        PostsController.getSumFromMonth((year + '-' + month + '-01'), (year + '-' + month + '-31')).then(function (response) {
+            if (response.ok) {
+                this.setState({monthAmount: response.data, spinner: false})
+            } else {
+                this.setState({spinner: false})
             }
         }.bind(this))
             .catch(function (err) {
                 console.log(err)
+                this.setState({spinner: false})
+
                 showMessage({
                     message: "Wystąpił błąd - nie można pobrać sumy z danego miesiąca",
                     type: "danger",
                     position: "center",
                     icon: 'danger'
                 });
-            })
+            }.bind(this))
     }
 
     render() {
         return (
             <Container>
+                <Spinner
+                    visible={this.state.spinner}
+                    textContent={'Trwa ładowanie...'}
+                    textStyle={{color: '#fff'}}
+
+                />
                 <View style={styles.H_container}>
                     <View style={styles.H_container_icon}>
                         <TouchableOpacity onPress={() => {
@@ -139,14 +152,14 @@ export default class AllPostsScene extends React.Component {
                     <PostsList posts={this.state.posts} showNotes={true}/>
                 </View>
                 <View style={styles.S_sum_container}>
-                <Text style={styles.S_sum_text_static}>
-                    ZMIANA:
-                </Text>
-                <Text style={styles.S_sum_text}>
-                    {money.format(this.state.monthAmount)}
-                </Text>
+                    <Text style={styles.S_sum_text_static}>
+                        ZMIANA:
+                    </Text>
+                    <Text style={styles.S_sum_text}>
+                        {money.format(this.state.monthAmount)}
+                    </Text>
                     {
-                        this.state.monthAmount <= 0?
+                        this.state.monthAmount <= 0 ?
                             <Icon name={'trending-down'} style={styles.S_sum_icon}/>
                             :
                             <Icon name={'trending-up'} style={styles.S_sum_icon}/>
@@ -196,26 +209,26 @@ const styles = StyleSheet.create({
         color: "white"
     },
 
-    S_sum_container:{
+    S_sum_container: {
         flexDirection: "row",
-        justifyContent:"center",
+        justifyContent: "center",
         padding: 10
     },
 
-    S_sum_icon:{
-        fontSize:18,
-        marginLeft:10,
+    S_sum_icon: {
+        fontSize: 18,
+        marginLeft: 10,
     },
 
-    S_sum_text_static:{
-        color:'grey',
-        marginRight:10,
-        fontSize:13
+    S_sum_text_static: {
+        color: 'grey',
+        marginRight: 10,
+        fontSize: 13
     },
 
-    S_sum_text:{
-        fontSize:13,
-        fontWeight:"bold"
+    S_sum_text: {
+        fontSize: 13,
+        fontWeight: "bold"
 
     }
 
