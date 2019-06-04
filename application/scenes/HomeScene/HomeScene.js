@@ -23,6 +23,7 @@ export default class HomeScene extends React.Component {
     }
 
     componentDidMount() {
+        this.getSum();
         this.getPosts();
     }
 
@@ -45,6 +46,27 @@ export default class HomeScene extends React.Component {
                 });
 
             }.bind(this))
+    }
+
+    getSum(){
+        PostsController.getTotalSum().then(function (response) {
+            if(response.ok){
+                this.setState({
+                    total:response.data
+                })
+            }
+        }.bind(this)).catch(function (error) {
+            console.log(error)
+            this.setState({
+                total:0,
+            })
+            showMessage({
+                message: "Wystąpił błąd - nie można wyświetlić całkowitego salda",
+                type: "danger",
+                position: "center",
+                icon: 'danger'
+            });
+        }.bind(this))
     }
 
     render() {

@@ -28,4 +28,27 @@ export default {
             });
         });
     },
+
+    getTotalSum() {
+        return new Promise((resolve, reject) => {
+            db.transaction((tx) => {
+                tx.executeSql(
+                    'SELECT SUM(CASE WHEN posts.p_type="+" THEN posts.p_amount WHEN posts.p_type="-" THEN -posts.p_amount ELSE 0 END) AS total FROM posts'
+                    , [], (tx, results) => {
+
+                    resolve({
+                        data: results.rows.item(0).total,
+                        msg: 'Get total sum successfully',
+                        ok: true,
+                    });
+                }, (error) => {
+                    reject({
+                        data: 0,
+                        msg: `${error.message}`,
+                        ok: false,
+                    })
+                });
+            });
+        });
+    },
 }
