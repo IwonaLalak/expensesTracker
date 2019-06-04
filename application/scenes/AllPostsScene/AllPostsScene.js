@@ -27,6 +27,7 @@ export default class AllPostsScene extends React.Component {
 
     componentDidMount() {
         this.getPosts(new Date().toJSON().substr(5, 2), new Date().toJSON().substr(0, 4))
+        this.getSum(new Date().toJSON().substr(5, 2), new Date().toJSON().substr(0, 4))
     }
 
     decrease() {
@@ -50,6 +51,7 @@ export default class AllPostsScene extends React.Component {
         })
 
         this.getPosts(cm.toString(), cy.toString())
+        this.getSum(cm.toString(), cy.toString())
     }
 
     increase() {
@@ -73,15 +75,13 @@ export default class AllPostsScene extends React.Component {
         })
 
         this.getPosts(cm.toString(), cy.toString())
+        this.getSum(cm.toString(), cy.toString())
     }
 
     getPosts(month, year) {
         this.setState({posts: []})
 
-        let datesince = (year+'-'+month+'-01');
-        let dateto = (year+'-'+month+'-31')
-
-        PostsController.getPostFromMonth(datesince,dateto).then(function (response) {
+        PostsController.getPostFromMonth((year+'-'+month+'-01'),(year+'-'+month+'-31')).then(function (response) {
             console.log(response)
             if(response.ok){
                 this.setState({posts:response.data})
@@ -91,6 +91,24 @@ export default class AllPostsScene extends React.Component {
                 console.log(err)
                 showMessage({
                     message: "Wystąpił błąd - nie można pobrać wpisów",
+                    type: "danger",
+                    position: "center",
+                    icon: 'danger'
+                });
+            })
+    }
+
+    getSum(month,year){
+        PostsController.getSumFromMonth((year+'-'+month+'-01'),(year+'-'+month+'-31')).then(function (response) {
+            console.log(response)
+            if(response.ok){
+                this.setState({monthAmount:response.data})
+            }
+        }.bind(this))
+            .catch(function (err) {
+                console.log(err)
+                showMessage({
+                    message: "Wystąpił błąd - nie można pobrać sumy z danego miesiąca",
                     type: "danger",
                     position: "center",
                     icon: 'danger'
