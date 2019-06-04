@@ -26,7 +26,7 @@ export default class AddScene extends React.Component {
             date: new Date(),
             note: "",
             categories: [],
-
+            changedData: false
         };
         moment.locale('pl', {
             months: 'styczeń_luty_marzec_kwiecień_maj_czerwiec_lipiec_sierpień_wrzesień_październik_listopad_grudzień'.split('_'),
@@ -166,6 +166,10 @@ export default class AddScene extends React.Component {
         let amount = Number((((this.state.amount).toString().substring(0, this.state.amount.length - 3)).split('.').join('')).replace(',', '.'))
 
         let data = this.state.date.toJSON().substring(0, 10)
+
+        if(this.state.changedData){
+            data = (new Date(this.state.date.setDate(this.state.date.getDate()+1))).toJSON().substring(0, 10)
+        }
 
         if (amount <= 0) {
             proper = false
@@ -369,7 +373,7 @@ export default class AddScene extends React.Component {
                                     animationType={"fade"}
                                     androidMode={"default"}
                                     textStyle={styles.F_date_date}
-                                    onDateChange={(date) => this.setState({date: date})}
+                                    onDateChange={(date) =>{ this.setState({date: date, changedData:true})}}
                                     disabled={false}
                                     formatChosenDate={date => {
                                         return moment(date).format('DD MMMM YYYY');
