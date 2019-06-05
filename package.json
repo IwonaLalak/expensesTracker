@@ -7,6 +7,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@remobile/react-native-splashscreen": "^1.0.8",
     "accounting-js": "^1.1.1",
     "moment": "^2.24.0",
     "native-base": "^2.12.1",
